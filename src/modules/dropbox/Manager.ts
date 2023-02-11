@@ -1,6 +1,5 @@
 import { Dropbox, DropboxOptions, files } from "dropbox";
 import DropboxFormatter from "./Formatter";
-import fetch from "node-fetch";
 import * as dotenv from "dotenv";
 dotenv.config();
 const { DROPBOX_ID, DROPBOX_SECRET, DROPBOX_REFRESH_TOKEN } = process.env;
@@ -11,7 +10,6 @@ const { DROPBOX_ID, DROPBOX_SECRET, DROPBOX_REFRESH_TOKEN } = process.env;
 export default class DropboxManager {
   private dbx: Dropbox;
   private config: DropboxOptions = {
-    fetch,
     clientId: DROPBOX_ID,
     clientSecret: DROPBOX_SECRET,
     refreshToken: DROPBOX_REFRESH_TOKEN,
