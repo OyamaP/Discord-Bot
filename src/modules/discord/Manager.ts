@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits, Message } from "discord.js";
-import StampEvent from "@/modules/discord/StampEvent";
+import StampEvent from "./StampEvent.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 const { DISCORD_TOKEN } = process.env;

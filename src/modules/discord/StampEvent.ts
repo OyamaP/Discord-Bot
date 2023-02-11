@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import DropboxManager from "@/modules/dropbox/Manager";
+import DropboxManager from "../dropbox/Manager.js";
 
 /**
  * Discord スタンプ(絵文字)利用された場合のイベント
