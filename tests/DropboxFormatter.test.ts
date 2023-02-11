@@ -1,4 +1,6 @@
-import DropboxFormatter, { FileMetadata } from "@/modules/dropbox/Formatter";
+import DropboxFormatter, {
+  FileMetadata,
+} from "../src/modules/dropbox/Formatter.js";
 
 describe("Dropbox Formatter", () => {
   test("MetaDataの一覧から指定ファイル名の表示パス(path_display)を抽出する", () => {

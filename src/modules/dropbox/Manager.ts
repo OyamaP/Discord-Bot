@@ -1,5 +1,5 @@
 import { Dropbox, DropboxOptions, files } from "dropbox";
-import DropboxFormatter from "./Formatter";
+import DropboxFormatter from "./Formatter.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 const { DROPBOX_ID, DROPBOX_SECRET, DROPBOX_REFRESH_TOKEN } = process.env;
