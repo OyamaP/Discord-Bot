@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  app:
+    image: node:18.12.0
+    working_dir: /usr/src/app
+    tty: true
+    ports: 
+    - '3000:3000'
+    volumes:
+      - ./:/usr/src/app
+    command: >
+      bash -c "npm install &&
+      nodemon src/server.js"
