@@ -2,12 +2,14 @@ version: "3.8"
 services:
   app:
     image: node:18.12.0
+    container_name: discord-bot
     working_dir: /usr/src/app
-    tty: true
     ports: 
     - '3000:3000'
+    environment:
+      CHOKIDAR_USEPOLLING: 1
     volumes:
       - ./:/usr/src/app
-    command: >
+    command:
       bash -c "npm install &&
-      nodemon src/server.js"
+      npm run watch"
