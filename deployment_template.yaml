@@ -9,7 +9,7 @@ spec:
   template:
     metadata:
       labels:
-        app: discord-bot-k8s
+        app: discord-bot
     spec:
       containers:
       - name: discord-bot
@@ -23,6 +23,8 @@ spec:
           value: '*DROPBOX_SECRET'
         - name: DROPBOX_REFRESH_TOKEN
           value: '*DROPBOX_REFRESH_TOKEN'
+        - name: TEST
+          value: '100'
         ports:
         - containerPort: 3000
 
