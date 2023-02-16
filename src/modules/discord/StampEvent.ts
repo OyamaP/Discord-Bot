@@ -28,6 +28,7 @@ export default class StampEvent {
   static startStampBot = async (message: Message): Promise<void> => {
     const stampName = this.toStampName(message);
     const runningMessage = await message.channel.send("Running Stamp Bot...");
+    // TODO: ここの密結合を解消する
     const dbx = new DropboxManager();
     const links = await dbx.fetchFileLinks(stampName);
     const userName = message.member?.nickname || message.author.username;
