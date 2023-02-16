@@ -25,7 +25,7 @@ export default class StampEvent implements EventInterface {
     const links = await dbx.fetchFileLinks(stampName);
     const userName = message.member?.nickname || message.author.username;
 
-    // message.delete();
+    message.delete();
     message.channel.send({
       embeds: links.map((link) => {
         return {
