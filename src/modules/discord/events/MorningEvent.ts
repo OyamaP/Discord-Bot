@@ -14,7 +14,8 @@ export default class MorningEvent implements EventInterface {
     const date = new Date();
     const hour = date.getHours();
     const morningTimes = [6, 8];
-    return morningTimes.includes(hour);
+    return false;
+    // return morningTimes.includes(hour);
   }
 
   public async startEvent(message: Message<boolean>): Promise<void> {

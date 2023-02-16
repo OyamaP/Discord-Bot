@@ -9,7 +9,7 @@ spec:
   template:
     metadata:
       labels:
-        app: discord-bot
+        app: discord-bot-k8s
     spec:
       containers:
       - name: discord-bot
