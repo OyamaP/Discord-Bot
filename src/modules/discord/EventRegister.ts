@@ -10,9 +10,9 @@ export default class EventRegister {
    * 条件に合致するイベントを全て実行する
    * @param message
    */
-  public startEvents(message: Message): void {
+  public async startTargetEvents(message: Message): Promise<void> {
     EventArray.forEach((event) => {
-      if (event.isTargetEvent(message)) event.startEvent(message);
+      if (event.isTargetEvent(message)) event.startTargetEvent(message);
     });
   }
 
@@ -20,10 +20,10 @@ export default class EventRegister {
    * 条件の合致した優先度の高いイベントを1つ実行する
    * @param message
    */
-  public startPrioritizedEvent(message: Message): void {
+  public async startPrioritizedEvent(message: Message): Promise<void> {
     const targetEvent = EventArray.find((event) =>
       event.isTargetEvent(message)
     );
-    if (targetEvent !== undefined) targetEvent.startEvent(message);
+    if (targetEvent !== undefined) targetEvent.startTargetEvent(message);
   }
 }

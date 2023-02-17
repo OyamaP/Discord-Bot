@@ -37,4 +37,4 @@ EXPOSE 3000
 
 ENV NODE_ENV prod
 
-CMD ["npm", "run", "prod"]
+CMD ["npm", "run", "prod:start"]

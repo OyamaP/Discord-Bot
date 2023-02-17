@@ -38,7 +38,6 @@ export default class DiscordManager {
       // console.log(message);
     } catch (e: any) {
       console.error(e);
-      // message.channel.send(e.message || "Exception Error.");
     }
   };
 }

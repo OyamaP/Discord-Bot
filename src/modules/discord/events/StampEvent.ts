@@ -19,22 +19,31 @@ export default class StampEvent implements EventInterface {
    * スタンプイベントを開始する
    * @param message メッセージ
    */
-  public startEvent = async (message: Message): Promise<void> => {
-    const stampName = this.toStampName(message);
-    const dbx = new DropboxManager();
-    const links = await dbx.fetchFileLinks(stampName);
-    const userName = message.member?.nickname || message.author.username;
+  public async startTargetEvent(message: Message): Promise<void> {
+    try {
+      // Dropbox からスタンプ画像のリンクを取得してくる
+      const stampName = this.toStampName(message);
+      const dbx = new DropboxManager();
+      const imageLinks = await dbx.fetchFileLinks(stampName);
+      if (!imageLinks.length) return;
 
-    message.delete();
-    message.channel.send({
-      embeds: links.map((link) => {
-        return {
-          description: `***used stamp by ${userName}***`,
-          image: { url: link },
-        };
-      }),
-    });
-  };
+      // Discord で利用されたメッセージ絵文字を削除する
+      message.delete();
+
+      // Discord にスタンプ画像を送信する
+      const userName = message.member?.nickname || message.author.username;
+      message.channel.send({
+        embeds: imageLinks.map((imageLink) => {
+          return {
+            description: `***used stamp by ${userName}***`,
+            image: { url: imageLink },
+          };
+        }),
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   /**
    * メッセージからスタンプ名を抽出する
@@ -43,7 +52,8 @@ export default class StampEvent implements EventInterface {
    */
   public toStampName(message: Message): string {
     const match = message.content.match(/:(.+):/);
-    if (match === null) throw new Error();
+    if (match === null)
+      throw new Error(`Failed match stamp name. => ${message.content}`);
     return match[0].replaceAll(":", "");
   }
 }

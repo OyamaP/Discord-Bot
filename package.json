@@ -8,7 +8,8 @@
     "start": "ts-node src/main.ts",
     "watch": "nodemon src/main.ts",
     "build": "tsc",
-    "prod": "nodemon build/main.js",
+    "prod:start": "node build/main.js",
+    "prod:watch": "nodemon build/main.js",
     "refreshToken": "ts-node src/modules/dropbox/createRefreshToken.ts",
     "test": "jest"
   },
