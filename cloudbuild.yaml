@@ -1,10 +1,10 @@
 steps:
 - id: 'build image'
   name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'asia-northeast1-docker.pkg.dev/${PROJECT_ID}/discord-bot/image', '.']
+  args: [ 'build', '-t', 'asia-northeast1-docker.pkg.dev/${PROJECT_ID}/discord-bot/image:$SHORT_SHA', '.']
 - id: 'push registory'
   name: 'gcr.io/cloud-builders/docker'
-  args: [ 'push', 'asia-northeast1-docker.pkg.dev/${PROJECT_ID}/discord-bot/image']
+  args: [ 'push', 'asia-northeast1-docker.pkg.dev/${PROJECT_ID}/discord-bot/image:$SHORT_SHA']
 - id: generate manifest
   name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
@@ -12,6 +12,7 @@ steps:
   - '-c'
   - |
     cat deployment_template.yaml \
+    | sed s/*SHORT_SHA/$SHORT_SHA/g \
     | sed s/*PROJECT_ID/${PROJECT_ID}/g \
     | sed s/*DISCORD_TOKEN/$$DISCORD_TOKEN/g \
     | sed s/*DROPBOX_ID/$$DROPBOX_ID/g \
@@ -40,4 +41,4 @@ availableSecrets:
     env: DROPBOX_REFRESH_TOKEN
 
 images:
-  - 'asia-northeast1-docker.pkg.dev/${PROJECT_ID}/discord-bot/image'
+  - 'asia-northeast1-docker.pkg.dev/${PROJECT_ID}/discord-bot/image:$SHORT_SHA'
