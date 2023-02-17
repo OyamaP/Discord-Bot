@@ -23,8 +23,6 @@ spec:
           value: '*DROPBOX_SECRET'
         - name: DROPBOX_REFRESH_TOKEN
           value: '*DROPBOX_REFRESH_TOKEN'
-        - name: TEST
-          value: '100'
         ports:
         - containerPort: 3000
 
