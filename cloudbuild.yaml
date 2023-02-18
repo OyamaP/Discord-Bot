@@ -20,7 +20,7 @@ steps:
     | sed s/*DROPBOX_SECRET/$$DROPBOX_SECRET/g \
     | sed s/*DROPBOX_REFRESH_TOKEN/$$DROPBOX_REFRESH_TOKEN/g \
     > deployment.yaml
-  secretEnv: ['DISCORD_TOKEN', 'DROPBOX_ID', 'DROPBOX_SECRET', 'DROPBOX_REFRESH_TOKEN']
+  secretEnv: ['DISCORD_TOKEN', 'DISCORD_CHANNEL_ID', 'DROPBOX_ID', 'DROPBOX_SECRET', 'DROPBOX_REFRESH_TOKEN']
 - id: 'deploy image'
   name: 'gcr.io/cloud-builders/kubectl'
   args:
