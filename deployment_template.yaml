@@ -13,10 +13,12 @@ spec:
     spec:
       containers:
       - name: discord-bot
-        image: 'asia-northeast1-docker.pkg.dev/*PROJECT_ID/discord-bot/image:latest'
+        image: 'asia-northeast1-docker.pkg.dev/*PROJECT_ID/discord-bot/image:*SHORT_SHA'
         env:
         - name: DISCORD_TOKEN
           value: '*DISCORD_TOKEN'
+        - name: DISCORD_CHANNEL_ID
+          value: '*DISCORD_CHANNEL_ID'
         - name: DROPBOX_ID
           value: '*DROPBOX_ID'
         - name: DROPBOX_SECRET

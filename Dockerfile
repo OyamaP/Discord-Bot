@@ -13,9 +13,6 @@ WORKDIR /work
 COPY . /work/
 
 RUN npm install --no-progress
-
-# RUN npm run lint
-
 RUN npm run build
 
 ## runtime環境を作成
@@ -40,4 +37,4 @@ EXPOSE 3000
 
 ENV NODE_ENV prod
 
-CMD ["node", "build/main"]
+CMD ["npm", "run", "prod:start"]
