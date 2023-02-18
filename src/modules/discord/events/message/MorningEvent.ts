@@ -1,6 +1,6 @@
 import EventInterface from "./EventInterface.js";
 import { Message } from "discord.js";
-import DropboxManager from "../../dropbox/Manager.js";
+import DropboxManager from "../../../dropbox/Manager.js";
 
 /**
  * 朝の特定時間に誰かが発言した際に発生するイベント
@@ -19,7 +19,7 @@ export default class MorningEvent implements EventInterface {
     return morningTimes.includes(hour);
   }
 
-  public async startTargetEvent(message: Message<boolean>): Promise<void> {
+  public async launchEvent(message: Message): Promise<void> {
     // 50% の確率 && 10分経過していればイベントを実行する
     if (
       !this.isRandomBoolean(0.5) ||

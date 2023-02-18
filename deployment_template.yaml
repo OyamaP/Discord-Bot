@@ -17,6 +17,8 @@ spec:
         env:
         - name: DISCORD_TOKEN
           value: '*DISCORD_TOKEN'
+        - name: DISCORD_CHANNEL_ID
+          value: '*DISCORD_CHANNEL_ID'
         - name: DROPBOX_ID
           value: '*DROPBOX_ID'
         - name: DROPBOX_SECRET

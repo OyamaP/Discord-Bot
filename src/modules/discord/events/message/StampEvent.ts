@@ -1,6 +1,6 @@
 import EventInterface from "./EventInterface.js";
 import { Message } from "discord.js";
-import DropboxManager from "../../dropbox/Manager.js";
+import DropboxManager from "../../../dropbox/Manager.js";
 
 /**
  * Discord スタンプ(絵文字)利用された場合のイベント
@@ -19,7 +19,7 @@ export default class StampEvent implements EventInterface {
    * スタンプイベントを開始する
    * @param message メッセージ
    */
-  public async startTargetEvent(message: Message): Promise<void> {
+  public async launchEvent(message: Message): Promise<void> {
     try {
       // Dropbox からスタンプ画像のリンクを取得してくる
       const stampName = this.toStampName(message);
@@ -28,7 +28,9 @@ export default class StampEvent implements EventInterface {
       if (!imageLinks.length) return;
 
       // Discord で利用されたメッセージ絵文字を削除する
-      message.delete();
+      await message.delete().catch(() => {
+        throw new Error("Failed delete message.");
+      });
 
       // Discord にスタンプ画像を送信する
       const userName = message.member?.nickname || message.author.username;
