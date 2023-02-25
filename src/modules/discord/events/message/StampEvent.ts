@@ -1,11 +1,12 @@
-import EventInterface from "./EventInterface.js";
-import { Message } from "discord.js";
-import DropboxManager from "../../../dropbox/Manager.js";
+import IMessageEvent from "./IMessageEvent.js";
+import { fetchFileLinks } from "../../utils/fetchFileLinks.js";
+import { sendImageToChannel } from "../../utils/sendImageToChannel.js";
+import { Message, APIEmbedAuthor } from "discord.js";
 
 /**
  * Discord スタンプ(絵文字)利用された場合のイベント
  */
-export default class StampEvent implements EventInterface {
+export default class StampEvent implements IMessageEvent {
   /**
    * メッセージがスタンプであるかを判定する
    * @param message メッセージ
@@ -23,24 +24,16 @@ export default class StampEvent implements EventInterface {
     try {
       // Dropbox からスタンプ画像のリンクを取得してくる
       const stampName = this.toStampName(message);
-      const dbx = new DropboxManager();
-      const imageLinks = await dbx.fetchFileLinks(stampName);
-      if (!imageLinks.length) return;
+      const imageLinks = await fetchFileLinks(stampName);
 
       // Discord で利用されたメッセージ絵文字を削除する
       await message.delete().catch(() => {
         throw new Error("Failed delete message.");
       });
 
-      // Discord にスタンプ画像を送信する
-      const userName = message.member?.nickname || message.author.username;
-      message.channel.send({
-        embeds: imageLinks.map((imageLink) => {
-          return {
-            description: `***used stamp by ${userName}***`,
-            image: { url: imageLink },
-          };
-        }),
+      // Discord にスタンプ画像を送信
+      sendImageToChannel(imageLinks, message.channel, {
+        author: this.toAutorEmbed(message),
       });
     } catch (e) {
       console.error(e);
@@ -52,10 +45,25 @@ export default class StampEvent implements EventInterface {
    * @param message メッセージ
    * @returns スタンプ名
    */
-  public toStampName(message: Message): string {
+  private toStampName(message: Message): string {
     const match = message.content.match(/:(.+):/);
     if (match === null)
       throw new Error(`Failed match stamp name. => ${message.content}`);
     return match[0].replaceAll(":", "");
+  }
+
+  /**
+   * メッセージ送信時のユーザーアイコンと名前を設定する
+   * @param message
+   * @returns
+   */
+  private toAutorEmbed(message: Message): APIEmbedAuthor {
+    const discordAppIconUrl = "https://cdn.discordapp.com/embed/avatars/0.png";
+    const userName = message.member?.nickname || message.author.username;
+    const userIcon = message.author.avatarURL() || discordAppIconUrl;
+    return {
+      name: userName,
+      icon_url: userIcon,
+    };
   }
 }
