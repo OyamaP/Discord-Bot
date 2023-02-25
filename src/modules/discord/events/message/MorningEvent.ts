@@ -35,6 +35,7 @@ export default class MorningEvent implements IMessageEvent {
       // 睡眠中のスタンプを取得
       const stampName = "hsn_huton";
       const imageLinks = await fetchFileLinks(stampName);
+      if (imageLinks === null) return;
 
       // Discord にスタンプ画像を送信
       sendImageToChannel(imageLinks, message.channel);

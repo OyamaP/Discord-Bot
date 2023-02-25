@@ -25,6 +25,7 @@ export default class StampEvent implements IMessageEvent {
       // Dropbox からスタンプ画像のリンクを取得してくる
       const stampName = this.toStampName(message);
       const imageLinks = await fetchFileLinks(stampName);
+      if (imageLinks === null) return;
 
       // Discord で利用されたメッセージ絵文字を削除する
       await message.delete().catch(() => {
@@ -35,7 +36,7 @@ export default class StampEvent implements IMessageEvent {
       sendImageToChannel(imageLinks, message.channel, {
         author: this.toAutorEmbed(message),
       });
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
     }
   }

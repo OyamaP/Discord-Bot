@@ -28,6 +28,7 @@ export default class Schedule {
       // 祝日昼のスタンプを取得
       const stampName = "neka_noon";
       const imageLinks = await fetchFileLinks(stampName);
+      if (imageLinks === null) return;
 
       // Discord にスタンプ画像を送信
       sendImageToChannel(imageLinks, channel);

@@ -1,4 +1,3 @@
-import Connector from "./Connector.js";
 import { Dropbox, files } from "dropbox";
 
 export type SearchV2Metadata =
@@ -12,21 +11,30 @@ export type ListFolderMetadata =
 export type SearchFileResult = SearchV2Metadata | ListFolderMetadata;
 
 /**
- * Dropboxへの接続とデータ取得を実施する
+ * Dropbox ファイル検索用クラス
  */
-export default class SearchFile extends Connector {
-  constructor(dbx?: Dropbox) {
-    super(dbx);
+export default class SearchFile {
+  private dbx: Dropbox;
+  constructor(dbx: Dropbox) {
+    this.dbx = dbx;
   }
 
-  public async fetchAll(fileName: string): Promise<SearchFileResult[]> {
+  /**
+   * ファイル名で全体検索をする
+   * @param fileName
+   * @returns
+   */
+  public async fetchAll(fileName: string): Promise<SearchFileResult[] | null> {
     // ファイル名で検索して見つからない場合は、フォルダ内のファイル一覧を取得する
-    // TODO: ここの処理を切り出す catch時にもフォルダ検索をできるように変える
-    const searchFileResult = await this.fetchSearchFiles(fileName);
-    const fileMetaData = searchFileResult.length
-      ? searchFileResult
-      : await this.fetchFilesInFolder();
-    return fileMetaData;
+    // TODO: 0件やcatch時にもフォルダ検索をできるように変える
+    try {
+      const searchFileResult =
+        (await this.fetchSearchFiles(fileName)) ||
+        (await this.fetchFilesInFolder());
+      return searchFileResult;
+    } catch (_) {
+      return null;
+    }
   }
 
   /**
@@ -36,18 +44,23 @@ export default class SearchFile extends Connector {
    */
   private async fetchSearchFiles(
     fileName: string
-  ): Promise<SearchV2Metadata[]> {
-    const searchFileResult = await this.dbx
+  ): Promise<SearchV2Metadata[] | null> {
+    const response = await this.dbx
       .filesSearchV2({
         query: fileName,
       })
-      .catch(() => {
-        throw new Error(`Failed search files. => fileName: ${fileName}`);
-      });
+      .then((res) => res.result.matches)
+      .catch(() => null);
+
+    if (response === null || !response.length) {
+      console.error(`Failed search files. => fileName: ${fileName}`);
+      return null;
+    }
+
     // https://dropbox.github.io/dropbox-sdk-js/global.html#FilesMetadataV2
     // match.metadata.metadata にアクセスしようとするとtype error になるためObject.valuesで強制的に取り出している
     // それに伴い型anyとなったため明示的に得られるはずだった型に変換する
-    return searchFileResult.result.matches.map(
+    return response.map(
       (match) => Object.values(match.metadata)[1]
     ) as unknown as SearchV2Metadata[];
   }
@@ -59,12 +72,16 @@ export default class SearchFile extends Connector {
    */
   private async fetchFilesInFolder(
     pathName: string = ""
-  ): Promise<ListFolderMetadata[]> {
+  ): Promise<ListFolderMetadata[] | null> {
     const response = await this.dbx
       .filesListFolder({ path: pathName })
-      .catch(() => {
-        throw new Error(`Failed search paths. => pathName: ${pathName}`);
-      });
+      .catch(() => null);
+
+    if (response === null) {
+      console.error(`Failed search paths. => pathName: ${pathName}`);
+      return null;
+    }
+
     return response.result.entries;
   }
 }
