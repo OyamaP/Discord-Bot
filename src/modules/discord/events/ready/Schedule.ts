@@ -1,6 +1,7 @@
+import { fetchFileLinks } from "../../utils/fetchFileLinks.js";
+import { sendImageToChannel } from "../../utils/sendImageToChannel.js";
 import { schedule } from "node-cron";
 import { Client, TextChannel } from "discord.js";
-import DropboxManager from "../../../dropbox/Manager.js";
 
 export default class Schedule {
   public async register(client: Client, channelIds: string[]): Promise<void> {
@@ -9,7 +10,6 @@ export default class Schedule {
       const channel = client.channels.cache.get(channelId) as
         | TextChannel
         | undefined;
-      // cache.get() はundifined の可能性もあるためエスケープ
       if (channel === undefined) return;
 
       // スケジュール設定 毎週土日 13時
@@ -19,21 +19,19 @@ export default class Schedule {
     });
   }
 
+  /**
+   * 土日昼にメッセージを送信する
+   * @param channel
+   */
   private async sendHolidayNoonMessage(channel: TextChannel) {
     try {
       // 祝日昼のスタンプを取得
       const stampName = "neka_noon";
-      const dbx = new DropboxManager();
-      const links = await dbx.fetchFileLinks(stampName);
+      const imageLinks = await fetchFileLinks(stampName);
+      if (imageLinks === null) return;
 
-      // Discord へスタンプを送信
-      channel.send({
-        embeds: links.map((link) => {
-          return {
-            image: { url: link },
-          };
-        }),
-      });
+      // Discord にスタンプ画像を送信
+      sendImageToChannel(imageLinks, channel);
     } catch (e) {
       console.error(e);
     }

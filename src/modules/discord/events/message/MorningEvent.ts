@@ -1,11 +1,12 @@
-import EventInterface from "./EventInterface.js";
+import IMessageEvent from "./IMessageEvent.js";
+import { fetchFileLinks } from "../../utils/fetchFileLinks.js";
+import { sendImageToChannel } from "../../utils/sendImageToChannel.js";
 import { Message } from "discord.js";
-import DropboxManager from "../../../dropbox/Manager.js";
 
 /**
  * 朝の特定時間に誰かが発言した際に発生するイベント
  */
-export default class MorningEvent implements EventInterface {
+export default class MorningEvent implements IMessageEvent {
   private dateNowMsBotTimer: number = 0;
 
   /**
@@ -20,10 +21,10 @@ export default class MorningEvent implements EventInterface {
   }
 
   public async launchEvent(message: Message): Promise<void> {
-    // 50% の確率 && 10分経過していればイベントを実行する
+    // 50% の確率 && 15分経過していればイベントを実行する
     if (
-      !this.isRandomBoolean(0.5) ||
-      !this.hasTimePassedByEvent(1000 * 60 * 10)
+      !this.isRandomGreaterThanArg(0.5) ||
+      !this.hasTimePassedByEvent(1000 * 60 * 15)
     )
       return;
 
@@ -33,34 +34,28 @@ export default class MorningEvent implements EventInterface {
     try {
       // 睡眠中のスタンプを取得
       const stampName = "hsn_huton";
-      const dbx = new DropboxManager();
-      const links = await dbx.fetchFileLinks(stampName);
+      const imageLinks = await fetchFileLinks(stampName);
+      if (imageLinks === null) return;
 
-      // Discord へスタンプを送信
-      message.channel.send({
-        embeds: links.map((link) => {
-          return {
-            image: { url: link },
-          };
-        }),
-      });
+      // Discord にスタンプ画像を送信
+      sendImageToChannel(imageLinks, message.channel);
     } catch (e) {
       console.error(e);
     }
   }
 
   /**
-   * 引数の値より生成ランダム値が高いかを判定する
+   * 引数の値より生成ランダム値(0 ~ 1)が高いかを判定する
    * @param value 小数点を含む0 ~ 1の値
    * @returns
    */
-  private isRandomBoolean(value: number): boolean {
+  private isRandomGreaterThanArg(value: number): boolean {
     return Math.random() > value;
   }
 
   /**
    * Morning イベントが起動してから指定ミリ秒数が経過したかを判定する
-   * @param 指定ミリ秒数
+   * @param msPass 指定ミリ秒数
    * @returns
    */
   private hasTimePassedByEvent(msPass: number): boolean {

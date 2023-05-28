@@ -62,3 +62,27 @@ error: {
 https://github.com/andreafabrizi/Dropbox-Uploader/issues/514#issuecomment-711345756  
 permissionに未設定のままdropboxと連携すると、後で権限を変更しても反映されない(仕様？)  
 一度dropboxのアプリ設定で解除(削除)して再度AuthorizationCodeの取得からやり直す必要があるため、最小権限で設定すると後で変更するのが面倒になる
+
+## Windowsローカル運用
+本Botをローカルで起動したままPCをスリープにすると当然Botも停止する  
+夜は寝るまで利用するとして、朝スリープ解除するまで他のメンバーが使えないのはいただけない
+
+以下windowsのスケジューラー登録用コマンドを[参考サイト](https://ishi-pc.net/colum/auto-sleep/)から流用
+
+電源オプション->スリープ->スリープ解除タイマーの許可を有効にした上でbashなどで実行
+```bash
+$script = '$signature = @"
+[DllImport("powrprof.dll")]
+public static extern bool SetSuspendState(bool Hibernate,bool ForceCritical,bool DisableWakeEvent);
+"@
+$func = Add-Type -memberDefinition $signature -namespace "Win32Functions" -name "SetSuspendStateFunction" -passThru
+$func::SetSuspendState($false,$true,$false)'
+
+$bytes = [System.Text.Encoding]::Unicode.GetBytes($script)
+$encodedCommand = [Convert]::ToBase64String($bytes)
+
+$action = New-ScheduledTaskAction -Execute "cmd.exe"
+$settings = New-ScheduledTaskSettingsSet -WakeToRun
+$trigger = New-ScheduledTaskTrigger -Daily -DaysInterval 1 -At 05:30
+Register-ScheduledTask -TaskName "WakeUp" -Action $action -Settings $settings -Trigger $trigger -Force
+```

@@ -11,19 +11,15 @@ const EventArray = [new StampEvent(), new MorningEvent()];
 /**
  * メッセージを起因とするイベントを管理する
  */
-export default class EventManager {
+export default class EventLauncher {
   /**
-   * Discord メッセージ作成イベント
+   * Discord イベント起動初期化
    * @param message メッセージ
    */
-  public messageCreateEvent = async (message: Message): Promise<void> => {
-    try {
-      if (message.author.bot) return;
-      if (ENV === "local") console.log(message);
-      this.launchPrioritizedEvent(message);
-    } catch (e: any) {
-      console.error(e);
-    }
+  public init = async (message: Message): Promise<void> => {
+    if (message.author.bot) return;
+    if (ENV === "local") console.log(message);
+    this.launchPrioritizedEvent(message);
   };
 
   /**
