@@ -3,7 +3,7 @@ import SearchFile from "./SearchFile.js";
 import SharedLink from "./SharedLink.js";
 import { Dropbox, files } from "dropbox";
 
-type FileMetadata =
+export type FileMetadata =
   | files.FileMetadataReference
   | files.FolderMetadataReference
   | files.DeletedMetadataReference

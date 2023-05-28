@@ -10,7 +10,8 @@ export default class SharedLink {
   }
 
   /**
-   * 表示パス(path_display)から共有リンクを取得する
+   * 表示パス(path_display)から共有リンクを取得する。
+   * 非同期で並列処理して、1つでも失敗した時点で終了してエラーが発生する。
    * @param pathDisplays 表示パス
    * @returns
    */
@@ -36,16 +37,14 @@ export default class SharedLink {
    * @returns
    */
   private async fetchSharedLink(pathDisplay: string): Promise<string | null> {
-    const response = await this.dbx
-      .sharingListSharedLinks({
+    try {
+      const response = await this.dbx.sharingListSharedLinks({
         path: pathDisplay,
-      })
-      .catch(() => null);
-    if (response) {
+      });
       const [link] = response.result.links;
       return link?.url || null;
-    } else {
-      console.error(`Failed fetch link. => pathDisplay: ${pathDisplay}`);
+    } catch {
+      console.log(`Failed fetch link. => pathDisplay: ${pathDisplay}`);
       return null;
     }
   }
@@ -56,15 +55,13 @@ export default class SharedLink {
    * @returns 共有リンク
    */
   private async createSharedLink(pathDisplay: string): Promise<string | null> {
-    const response = await this.dbx
-      .sharingCreateSharedLinkWithSettings({
+    try {
+      const response = await this.dbx.sharingCreateSharedLinkWithSettings({
         path: pathDisplay,
-      })
-      .catch(() => null);
-    if (response) {
+      });
       return response.result.url;
-    } else {
-      console.error(`Failed create link. => pathDisplay: ${pathDisplay}`);
+    } catch (e) {
+      console.log(`Failed create link. => pathDisplay: ${pathDisplay}`);
       return null;
     }
   }
