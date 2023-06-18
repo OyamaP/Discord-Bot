@@ -1,6 +1,6 @@
 import IMessageEvent from "./IMessageEvent.js";
-import { fetchFileLinks } from "../../utils/fetchFileLinks.js";
-import { sendImageToChannel } from "../../utils/sendImageToChannel.js";
+import { fetchFileLinks } from "../../storage/fetchFileLinks.js";
+import { sendImageToChannel } from "../../send/sendImageToChannel.js";
 import { Message, APIEmbedAuthor } from "discord.js";
 
 /**
@@ -16,15 +16,11 @@ export default class StampEvent implements IMessageEvent {
     return /^<:(.+):(.+)>$/.test(message.content);
   }
 
-  /**
-   * スタンプイベントを開始する
-   * @param message メッセージ
-   */
-  public async launchEvent(message: Message): Promise<void> {
+  public async launchEvent(message: Message, channelId: string): Promise<void> {
     try {
       // Dropbox からスタンプ画像のリンクを取得してくる
       const stampName = this.toStampName(message);
-      const imageLinks = await fetchFileLinks(stampName);
+      const imageLinks = await fetchFileLinks(stampName, `/${channelId}`);
       if (imageLinks === null) return;
 
       // Discord で利用されたメッセージ絵文字を削除する

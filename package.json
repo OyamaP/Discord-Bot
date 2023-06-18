@@ -8,9 +8,8 @@
     "dev": "ts-node src/main.ts",
     "watch": "nodemon src/main.ts",
     "build": "tsc",
-    "prod:start": "node build/main.js",
-    "prod:watch": "nodemon build/main.js",
-    "refreshToken": "ts-node src/modules/dropbox/setup/createRefreshToken.ts",
+    "start": "node build/main.js",
+    "refreshToken": "ts-node src/accessor/dropbox/createRefreshToken.ts",
     "test": "jest"
   },
   "license": "MIT",
