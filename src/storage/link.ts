@@ -1,5 +1,5 @@
-import { Dropbox } from "dropbox";
-import * as dotenv from "dotenv";
+import { Dropbox } from 'dropbox';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 const initDropbox = () => {
@@ -80,5 +80,5 @@ const createSharedLink = async (
  * @returns ダウンロードURL
  */
 const toDownloadUrl = (url: string): string => {
-  return url.replace("www.dropbox.com", "dl.dropboxusercontent.com");
+  return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
 };

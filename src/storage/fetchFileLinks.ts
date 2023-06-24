@@ -1,5 +1,5 @@
-import { fetchPathDisplays } from "./search.js";
-import { fetchDownloadLinks } from "./link.js";
+import { fetchPathDisplays } from './search.js';
+import { fetchDownloadLinks } from './link.js';
 
 /**
  * Dropbox から対象ファイルのURLを取得する

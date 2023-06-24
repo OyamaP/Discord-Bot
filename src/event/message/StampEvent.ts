@@ -1,7 +1,7 @@
-import IMessageEvent from "./IMessageEvent.js";
-import { fetchFileLinks } from "../../storage/fetchFileLinks.js";
-import { sendImageToChannel } from "../../send/sendImageToChannel.js";
-import { Message, APIEmbedAuthor } from "discord.js";
+import IMessageEvent from './IMessageEvent.js';
+import { fetchFileLinks } from '../../storage/fetchFileLinks.js';
+import { sendImageToChannel } from '../../send/sendImageToChannel.js';
+import { Message, APIEmbedAuthor } from 'discord.js';
 
 /**
  * Discord スタンプ(絵文字)利用された場合のイベント
@@ -25,7 +25,7 @@ export default class StampEvent implements IMessageEvent {
 
       // Discord で利用されたメッセージ絵文字を削除する
       await message.delete().catch(() => {
-        throw new Error("Failed delete message.");
+        throw new Error('Failed delete message.');
       });
 
       // Discord にスタンプ画像を送信
@@ -46,7 +46,7 @@ export default class StampEvent implements IMessageEvent {
     const match = message.content.match(/:(.+):/);
     if (match === null)
       throw new Error(`Failed match stamp name. => ${message.content}`);
-    return match[0].replaceAll(":", "");
+    return match[0].replaceAll(':', '');
   }
 
   /**
@@ -55,7 +55,7 @@ export default class StampEvent implements IMessageEvent {
    * @returns
    */
   private toAutorEmbed(message: Message): APIEmbedAuthor {
-    const discordAppIconUrl = "https://cdn.discordapp.com/embed/avatars/0.png";
+    const discordAppIconUrl = 'https://cdn.discordapp.com/embed/avatars/0.png';
     const userName = message.member?.nickname || message.author.username;
     const userIcon = message.author.avatarURL() || discordAppIconUrl;
     return {

@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Message } from 'discord.js';
 
 /**
  * メッセージイベントを定義する際はこのインターフェイスを利用して登録する

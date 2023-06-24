@@ -1,4 +1,4 @@
-import { SendingExecutableChannel } from "../send/sendImageToChannel.js";
+import { SendingExecutableChannel } from '../send/sendImageToChannel.js';
 
 export interface ISchedule {
   regist(...any: any): void;

@@ -1,9 +1,9 @@
-import { Client } from "discord.js";
-import { ISendMessageSchedule } from "./ISchedule.js";
+import { Client } from 'discord.js';
+import { ISendMessageSchedule } from './ISchedule.js';
 import {
   SendingExecutableChannel,
   isSendingExecutableChannel,
-} from "../send/sendImageToChannel.js";
+} from '../send/sendImageToChannel.js';
 
 /**
  * メッセージ送信スケジュールの抽象クラス

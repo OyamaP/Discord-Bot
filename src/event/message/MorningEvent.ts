@@ -1,7 +1,7 @@
-import IMessageEvent from "./IMessageEvent.js";
-import { fetchFileLinks } from "../../storage/fetchFileLinks.js";
-import { sendImageToChannel } from "../../send/sendImageToChannel.js";
-import { Message } from "discord.js";
+import IMessageEvent from './IMessageEvent.js';
+import { fetchFileLinks } from '../../storage/fetchFileLinks.js';
+import { sendImageToChannel } from '../../send/sendImageToChannel.js';
+import { Message } from 'discord.js';
 
 /**
  * 朝の特定時間に誰かが発言した際に発生するイベント
@@ -34,7 +34,7 @@ export default class MorningEvent implements IMessageEvent {
 
     try {
       // 睡眠中のスタンプを取得
-      const stampName = "hsn_huton";
+      const stampName = 'hsn_huton';
       const imageLinks = await fetchFileLinks(stampName, `/${message.guildId}`);
       if (imageLinks === null) return;
 

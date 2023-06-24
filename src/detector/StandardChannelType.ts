@@ -1,11 +1,11 @@
-import { Client, Message } from "discord.js";
-import { IChannelType } from "./IChannelType.js";
-import { ISchedule } from "../schedule/ISchedule.js";
-import SendMessageAtHolidayNoon from "../schedule/SendMessageAtHolidayNoon.js";
-import { toSplitArray } from "./toSplitArray.js";
-import MorningEvent from "../event/message/MorningEvent.js";
-import StampEvent from "../event/message/StampEvent.js";
-import * as dotenv from "dotenv";
+import { Client, Message } from 'discord.js';
+import { IChannelType } from './IChannelType.js';
+import { ISchedule } from '../schedule/ISchedule.js';
+import SendMessageAtHolidayNoon from '../schedule/SendMessageAtHolidayNoon.js';
+import { toSplitArray } from './toSplitArray.js';
+import MorningEvent from '../event/message/MorningEvent.js';
+import StampEvent from '../event/message/StampEvent.js';
+import * as dotenv from 'dotenv';
 dotenv.config();
 const { DISCORD_STANDARD_CHANNEL_ID } = process.env;
 

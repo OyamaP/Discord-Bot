@@ -1,5 +1,5 @@
-import { Dropbox, files } from "dropbox";
-import * as dotenv from "dotenv";
+import { Dropbox, files } from 'dropbox';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 const initDropbox = () => {
@@ -22,7 +22,7 @@ export const fetchPathDisplays = async (
   const pathDisplays = metaData
     // metadataには類似した検索結果が含まれるため、厳密に名前を取り出す必要がある
     // 取得したファイル名には拡張子が含まれるため、split()で取り出して比較する
-    .filter((metadata) => metadata.metadata.name.split(".")[0] === fileName)
+    .filter((metadata) => metadata.metadata.name.split('.')[0] === fileName)
     // path_display は型にundefinedを含むため除外する必要がある
     .map((data) => data.metadata.path_display)
     .filter(
@@ -64,5 +64,5 @@ const fetchFileMetadata = async (
 const isMetadataV2Metadata = (
   value: unknown
 ): value is files.MetadataV2Metadata => {
-  return value !== null && typeof value === "object" && "metadata" in value;
+  return value !== null && typeof value === 'object' && 'metadata' in value;
 };

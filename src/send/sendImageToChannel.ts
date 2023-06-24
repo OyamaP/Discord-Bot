@@ -5,7 +5,7 @@ import {
   StageChannel,
   ForumChannel,
   APIEmbedAuthor,
-} from "discord.js";
+} from 'discord.js';
 
 /**
  * send()実行可能なチャンネル
@@ -23,7 +23,7 @@ export type SendingExecutableChannel = Exclude<
 export function isSendingExecutableChannel(
   channel: Channel
 ): channel is SendingExecutableChannel {
-  return "send" in channel;
+  return 'send' in channel;
 }
 
 /**

@@ -1,7 +1,7 @@
-import { Client, Message } from "discord.js";
-import { IChannelType } from "./IChannelType.js";
-import { toSplitArray } from "./toSplitArray.js";
-import * as dotenv from "dotenv";
+import { Client, Message } from 'discord.js';
+import { IChannelType } from './IChannelType.js';
+import { toSplitArray } from './toSplitArray.js';
+import * as dotenv from 'dotenv';
 dotenv.config();
 const { DISCORD_PREMIUM_CHANNEL_ID } = process.env;
 

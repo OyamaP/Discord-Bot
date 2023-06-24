@@ -1,7 +1,7 @@
-import { Client, GatewayIntentBits } from "discord.js";
-import { setReadyEvent } from "./event/ready/setReadyEvent.js";
-import { setMessageEvent } from "./event/message/setMessageEvent.js";
-import * as dotenv from "dotenv";
+import { Client, GatewayIntentBits } from 'discord.js';
+import { setReadyEvent } from './event/ready/setReadyEvent.js';
+import { setMessageEvent } from './event/message/setMessageEvent.js';
+import * as dotenv from 'dotenv';
 dotenv.config();
 const { DISCORD_TOKEN } = process.env;
 
@@ -13,8 +13,8 @@ function main() {
       GatewayIntentBits.MessageContent,
     ],
   });
-  client.on("ready", setReadyEvent);
-  client.on("messageCreate", setMessageEvent);
+  client.on('ready', setReadyEvent);
+  client.on('messageCreate', setMessageEvent);
   client.login(DISCORD_TOKEN);
 }
 

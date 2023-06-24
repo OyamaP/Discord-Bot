@@ -1,4 +1,4 @@
-import { Client, Message } from "discord.js";
+import { Client, Message } from 'discord.js';
 
 export interface IChannelType {
   isTarget(channelId: string): boolean;
