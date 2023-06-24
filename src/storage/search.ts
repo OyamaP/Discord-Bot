@@ -2,11 +2,15 @@ import { Dropbox, files } from "dropbox";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const dbx = new Dropbox({
-  clientId: process.env.DROPBOX_ID,
-  clientSecret: process.env.DROPBOX_SECRET,
-  refreshToken: process.env.DROPBOX_REFRESH_TOKEN,
-});
+const initDropbox = () => {
+  const dbx = new Dropbox({
+    clientId: process.env.DROPBOX_ID,
+    clientSecret: process.env.DROPBOX_SECRET,
+    refreshToken: process.env.DROPBOX_REFRESH_TOKEN,
+  });
+
+  return dbx;
+};
 
 export const fetchPathDisplays = async (
   fileName: string,
@@ -16,6 +20,10 @@ export const fetchPathDisplays = async (
   if (metaData === null) return null;
 
   const pathDisplays = metaData
+    // metadataには類似した検索結果が含まれるため、厳密に名前を取り出す必要がある
+    // 取得したファイル名には拡張子が含まれるため、split()で取り出して比較する
+    .filter((metadata) => metadata.metadata.name.split(".")[0] === fileName)
+    // path_display は型にundefinedを含むため除外する必要がある
     .map((data) => data.metadata.path_display)
     .filter(
       (pathDisplay): pathDisplay is Exclude<typeof pathDisplay, undefined> =>
@@ -30,6 +38,7 @@ const fetchFileMetadata = async (
   pathName: string
 ): Promise<files.MetadataV2Metadata[] | null> => {
   try {
+    const dbx = initDropbox();
     const response = await dbx.filesSearchV2({
       query: fileName,
       options: {

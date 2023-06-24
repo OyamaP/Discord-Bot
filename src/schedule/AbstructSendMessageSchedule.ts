@@ -23,7 +23,7 @@ export default abstract class AbstructSendMessageSchedule
       throw new Error(`${channelId}のチャンネルIDは見つかりませんでした`);
     }
     if (!isSendingExecutableChannel(channel)) {
-      throw new Error(`${channel.id}のチャンネルIDには送信できません`);
+      throw new Error(`${channelId}のチャンネルIDには送信できません`);
     }
 
     this.channel = channel;

@@ -1,6 +1,6 @@
+import { Client, GatewayIntentBits } from "discord.js";
 import { setReadyEvent } from "./event/ready/setReadyEvent.js";
 import { setMessageEvent } from "./event/message/setMessageEvent.js";
-import { Client, GatewayIntentBits } from "discord.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 const { DISCORD_TOKEN } = process.env;

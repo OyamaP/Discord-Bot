@@ -16,11 +16,11 @@ export default class StampEvent implements IMessageEvent {
     return /^<:(.+):(.+)>$/.test(message.content);
   }
 
-  public async launchEvent(message: Message, channelId: string): Promise<void> {
+  public async launchEvent(message: Message): Promise<void> {
     try {
       // Dropbox からスタンプ画像のリンクを取得してくる
       const stampName = this.toStampName(message);
-      const imageLinks = await fetchFileLinks(stampName, `/${channelId}`);
+      const imageLinks = await fetchFileLinks(stampName, `/${message.guildId}`);
       if (imageLinks === null) return;
 
       // Discord で利用されたメッセージ絵文字を削除する

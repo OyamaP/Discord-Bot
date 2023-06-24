@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { initChannelType } from "../../detector/initChannelType.js";
+import { initChannelType } from "../../detector/channelType.js";
 
 /**
  * メッセージを起因とするイベントを設定する
@@ -20,6 +20,10 @@ export function setMessageEvent(message: Message): void {
     timestamp: new Date(createdTimestamp),
   });
 
-  const targetChannelType = initChannelType(channelId);
-  targetChannelType.launchMessageEvent(message);
+  try {
+    const targetChannelType = initChannelType(channelId);
+    targetChannelType.launchMessageEvent(message);
+  } catch (e: any) {
+    console.error(e);
+  }
 }

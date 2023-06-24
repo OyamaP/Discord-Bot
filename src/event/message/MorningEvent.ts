@@ -21,7 +21,7 @@ export default class MorningEvent implements IMessageEvent {
     return morningTimes.includes(hour);
   }
 
-  public async launchEvent(message: Message, channelId: string): Promise<void> {
+  public async launchEvent(message: Message): Promise<void> {
     // 50% の確率 && 15分経過していればイベントを実行する
     if (
       !this.isRandomGreaterThanArg(0.5) ||
@@ -35,7 +35,7 @@ export default class MorningEvent implements IMessageEvent {
     try {
       // 睡眠中のスタンプを取得
       const stampName = "hsn_huton";
-      const imageLinks = await fetchFileLinks(stampName, `/${channelId}`);
+      const imageLinks = await fetchFileLinks(stampName, `/${message.guildId}`);
       if (imageLinks === null) return;
 
       // Discord にスタンプ画像を送信

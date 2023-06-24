@@ -23,7 +23,7 @@ export type SendingExecutableChannel = Exclude<
 export function isSendingExecutableChannel(
   channel: Channel
 ): channel is SendingExecutableChannel {
-  return channel.hasOwnProperty("send");
+  return "send" in channel;
 }
 
 /**

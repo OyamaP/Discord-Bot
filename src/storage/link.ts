@@ -2,11 +2,15 @@ import { Dropbox } from "dropbox";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const dbx = new Dropbox({
-  clientId: process.env.DROPBOX_ID,
-  clientSecret: process.env.DROPBOX_SECRET,
-  refreshToken: process.env.DROPBOX_REFRESH_TOKEN,
-});
+const initDropbox = () => {
+  const dbx = new Dropbox({
+    clientId: process.env.DROPBOX_ID,
+    clientSecret: process.env.DROPBOX_SECRET,
+    refreshToken: process.env.DROPBOX_REFRESH_TOKEN,
+  });
+
+  return dbx;
+};
 
 /**
  * 表示パス(path_display)からダウンロードリンクを取得する。
@@ -38,11 +42,12 @@ export const fetchDownloadLinks = async (
  */
 const fetchSharedLink = async (pathDisplay: string): Promise<string | null> => {
   try {
+    const dbx = initDropbox();
     const response = await dbx.sharingListSharedLinks({
       path: pathDisplay,
     });
     const [link] = response.result.links;
-    return link?.url || null;
+    return link.url;
   } catch {
     console.log(`Failed fetch link. => pathDisplay: ${pathDisplay}`);
     return null;
@@ -58,6 +63,7 @@ const createSharedLink = async (
   pathDisplay: string
 ): Promise<string | null> => {
   try {
+    const dbx = initDropbox();
     const response = await dbx.sharingCreateSharedLinkWithSettings({
       path: pathDisplay,
     });
