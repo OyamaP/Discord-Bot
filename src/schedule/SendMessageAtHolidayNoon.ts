@@ -22,7 +22,7 @@ export default class SendMessageAtHolidayNoon extends AbstructSendMessageSchedul
       if (imageLinks === null) return;
 
       // Discord にスタンプ画像を送信
-      sendImageToChannel(imageLinks, this.channel);
+      await sendImageToChannel(imageLinks, this.channel);
     } catch (e) {
       console.error(e);
     }

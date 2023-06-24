@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { initChannelType } from '../../detector/channelType.js';
+import initChannelType from '../../detector/initChannelType.js';
 
 /**
  * メッセージを起因とするイベントを設定する

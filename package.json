@@ -10,7 +10,8 @@
     "build": "tsc",
     "start": "node build/main.js",
     "refreshToken": "ts-node src/accessor/dropbox/createRefreshToken.ts",
-    "test": "jest"
+    "test": "jest",
+    "test:silent": "jest --silent"
   },
   "license": "MIT",
   "dependencies": {
