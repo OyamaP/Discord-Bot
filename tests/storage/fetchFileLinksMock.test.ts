@@ -1,13 +1,11 @@
 import { Dropbox } from '../../__mocks__/dropbox.js';
-import { fetchFileLinks } from '../../src/storage/fetchFileLinks.js';
-import * as dotenv from 'dotenv';
-dotenv.config();
+import fetchFileLinks from '../../src/storage/fetchFileLinks.js';
 
-// モック全体を停止するにはimport と同じスコープで宣言する必要がある
-// 本物のモジュールの動作を確認する際にはjest.unmock() のコメントアウトを外すこと
-// jest.unmock("dropbox");
+describe('fetchFileLinks: mock', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-describe('fetchFileLinks', () => {
   test('正常系: ファイルのリンクを取得する', async () => {
     const fileName = 'test_filename';
     const pathName = '/123456789001010101';
@@ -24,9 +22,7 @@ describe('fetchFileLinks', () => {
   test('異常系: ファイルのリンクを取得する際、ファイル検索に失敗', async () => {
     jest
       .spyOn(Dropbox.prototype, 'filesSearchV2')
-      .mockImplementationOnce(() => {
-        throw new Error('テスト用エラー');
-      });
+      .mockRejectedValueOnce(new Error('テスト用エラー'));
     const fileName = 'test_filename';
     const pathName = '/123456789001010101';
     const fileLinks = await fetchFileLinks(fileName, pathName);
@@ -38,27 +34,13 @@ describe('fetchFileLinks', () => {
     // 両方をエラーモックにしておく
     jest
       .spyOn(Dropbox.prototype, 'sharingListSharedLinks')
-      .mockImplementationOnce(() => {
-        throw new Error('テスト用エラー');
-      });
+      .mockRejectedValueOnce(new Error('テスト用エラー'));
     jest
       .spyOn(Dropbox.prototype, 'sharingCreateSharedLinkWithSettings')
-      .mockImplementationOnce(() => {
-        throw new Error('テスト用エラー');
-      });
+      .mockRejectedValueOnce(new Error('テスト用エラー'));
     const fileName = 'test_filename';
     const pathName = '/123456789001010101';
     const fileLinks = await fetchFileLinks(fileName, pathName);
     expect(fileLinks).toBe(null);
-  });
-
-  test.skip('実際のアクセス: ファイルのリンクを取得する', async () => {
-    // 実行する際は jest.unmock() をトップレベルで実行してください
-    const fileName = 'yoshi';
-    const pathName = `/${process.env.DISCORD_JEST_GUILD_ID || ''}`;
-    const fileLinks = await fetchFileLinks(fileName, pathName);
-
-    console.log(fileLinks);
-    expect(fileLinks).toHaveLength(1);
   });
 });

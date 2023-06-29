@@ -7,7 +7,7 @@ import { fetchDownloadLinks } from './link.js';
  * @param pathName
  * @returns ファイルURL
  */
-export async function fetchFileLinks(
+export default async function fetchFileLinks(
   fileName: string,
   pathName: string
 ): Promise<string[] | null> {

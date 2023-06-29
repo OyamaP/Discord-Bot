@@ -1,6 +1,6 @@
 import { schedule } from 'node-cron';
 import AbstructSendMessageSchedule from './AbstructSendMessageSchedule.js';
-import { fetchFileLinks } from '../storage/fetchFileLinks.js';
+import fetchFileLinks from '../storage/fetchFileLinks.js';
 import { sendImageToChannel } from '../send/sendImageToChannel.js';
 
 /**
