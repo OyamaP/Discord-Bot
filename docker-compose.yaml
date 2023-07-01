@@ -2,12 +2,20 @@ version: '3.8'
 services:
   app:
     image: node:18.12.0-alpine
-    container_name: discord-bot
-    working_dir: /usr/src/app
+    container_name: discord-bot-app
+    working_dir: /app
     ports:
       - '3000:3000'
     environment:
-      CHOKIDAR_USEPOLLING: 1
+      - LANG = C.UTF-8
+      - TZ = Asia/Tokyo
+      - CHOKIDAR_USEPOLLING = 1
     volumes:
-      - ./:/usr/src/app
-    command: ash -c "npm ci && npm run watch"
+      - ./:/app
+    entrypoint:
+      - ash
+    command:
+      - -c
+      - |
+        [ -d ./node_modules ] || npm ci
+        npm run watch

@@ -9,7 +9,7 @@
     "watch": "nodemon src/main.ts",
     "build": "tsc",
     "start": "node build/main.js",
-    "refreshToken": "ts-node src/accessor/dropbox/createRefreshToken.ts",
+    "refreshToken": "ts-node src/storage/createRefreshToken.ts",
     "test": "jest",
     "test:silent": "jest --silent"
   },

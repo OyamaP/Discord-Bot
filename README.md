@@ -2,6 +2,8 @@
 
 ## docker
 
+マルチステージビルドを利用して最小限の構成にビルドしたイメージを作成します。
+
 - 作成
 
 ```bash
@@ -16,6 +18,14 @@ docker run -d -p 3000:3000 --name discord-bot-build --env-file ./.env discord-bo
 ```
 
 ## docker-compose
+
+ローカルで開発用のコンテナを作成します。
+初回など`node_modules `がない場合は自動でインストールされます。
+2 回目以降の実行時にはインストール処理がされません。
+
+```bash
+docker-compose up -d
+```
 
 # Discord Bot
 
