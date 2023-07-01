@@ -1,40 +1,27 @@
-## パッケージのインストール
-FROM node:18.12.0-alpine as desp-stage
+# build作成 #
+#############
+FROM node:18.12.0-alpine AS builder
+
 WORKDIR /app
+COPY . .
+RUN npm ci --no-progress && npm run build
 
-COPY ./package*.json ./
-RUN npm install --production --no-progress
-
-## buildを実行
-FROM node:18.12.0-alpine as build-stage
-
-WORKDIR /work
-
-COPY . /work/
-
-RUN npm install --no-progress
-RUN npm run build
-
-## runtime環境を作成
-FROM node:18.12.0-alpine as runtime-stage
-
+# image作成 #
+#############
+FROM node:18.12.0-alpine AS image
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
+ENV NODE_ENV production
 
 WORKDIR /app
-
 COPY ./package*.json ./
-COPY --from=desp-stage /app/node_modules ./node_modules
-COPY --from=build-stage /work/build ./build
+COPY --from=builder /app/build ./build
+RUN npm ci --production --no-progress
 
-## PID1問題に対応する
+# PID1問題対応
 RUN apk add --no-cache tini
 ENTRYPOINT ["/sbin/tini", "--"]
 
 USER node
-
 EXPOSE 3000
-
-ENV NODE_ENV prod
-
 CMD ["npm", "start"]
