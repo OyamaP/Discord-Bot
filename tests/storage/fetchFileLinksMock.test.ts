@@ -1,4 +1,4 @@
-import { Dropbox } from '../../__mocks__/dropbox.js';
+import { Dropbox } from 'dropbox';
 import fetchFileLinks from '../../src/storage/fetchFileLinks.js';
 
 describe('fetchFileLinks: mock', () => {

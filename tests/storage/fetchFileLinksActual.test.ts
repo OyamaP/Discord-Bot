@@ -7,7 +7,7 @@ jest.unmock('dropbox');
 
 describe('fetchFileLinks: actual', () => {
   test('ファイルのリンクを取得する', async () => {
-    const fileName = 'yoshi';
+    const fileName = 'fuka_jitome1';
     const pathName = `/${process.env.DISCORD_JEST_GUILD_ID || ''}`;
     const fileLinks = await fetchFileLinks(fileName, pathName);
 
