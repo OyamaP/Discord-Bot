@@ -8,8 +8,7 @@ services:
       - '3000:3000'
     environment:
       - LANG = C.UTF-8
-      - TZ = Asia/Tokyo
-      - CHOKIDAR_USEPOLLING = 1
+      - CHOKIDAR_USEPOLLING = true
     volumes:
       - ./:/app
     entrypoint:
@@ -18,4 +17,6 @@ services:
       - -c
       - |
         [ -d ./node_modules ] || npm ci
-        npm run watch
+        apk --update add tzdata
+        cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+        npx nodemon -L src/main.ts

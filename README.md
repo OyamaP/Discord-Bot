@@ -19,7 +19,7 @@ docker run -d -p 3000:3000 --name discord-bot-build --env-file ./.env discord-bo
 
 ## docker-compose
 
-ローカルで開発用のコンテナを作成します。
+ローカルで開発用のコンテナを作成して`nodemon`で監視実行します。
 初回など`node_modules `がない場合は自動でインストールされます。
 2 回目以降の実行時にはインストール処理がされません。
 
