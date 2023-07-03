@@ -7,7 +7,7 @@
 - 作成
 
 ```bash
-docker build ./ -t discord-bot-build --build-arg BUILDKIT_INLINE_CACHE=1
+docker build ./ --target production -t discord-bot-build --build-arg BUILDKIT_INLINE_CACHE=1
 ```
 
 - 起動

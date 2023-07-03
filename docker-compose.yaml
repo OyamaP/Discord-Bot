@@ -1,22 +1,44 @@
 version: '3.8'
 services:
   app:
-    image: node:18.12.0-alpine
+    build:
+      context: .
+      target: setting
     container_name: discord-bot-app
     working_dir: /app
     ports:
       - '3000:3000'
     environment:
-      - LANG = C.UTF-8
-      - CHOKIDAR_USEPOLLING = true
+      - NODE_ENV=local
+      - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./:/app
-    entrypoint:
-      - ash
     command:
+      - ash
       - -c
       - |
         [ -d ./node_modules ] || npm ci
-        apk --update add tzdata
-        cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-        npx nodemon -L src/main.ts
+        npx nodemon src/main.ts
+
+  db:
+    image: mysql:8.0
+    container_name: discord-bot-db
+    ports:
+      - 3306:3306
+    networks:
+      - external
+    environment:
+      - TZ=Asia/Tokyo
+      - MYSQL_ROOT_PASSWORD=local_pass
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./database/my.cnf:/etc/mysql/conf.d/my.cnf
+
+volumes:
+  mysql-data:
+    name: discord-bot-db-data
+
+networks:
+  external:
+    name: discord-bot
+    internal: false
