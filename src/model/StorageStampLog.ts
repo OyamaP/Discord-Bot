@@ -25,16 +25,14 @@ export class StorageStampLog extends Model<
 
   declare userName: string;
 
-  declare discriminator: string;
-
-  declare stampId: string;
+  declare stampName: string;
 
   declare createdAt: CreationOptional<Date>;
 
   /**
    * idで有効なレコードを1つ取得する
-   * @param id 
-   * @returns 
+   * @param id
+   * @returns
    */
   static async findById(id: number) {
     const where: WhereOptions = {
@@ -55,20 +53,17 @@ export class StorageStampLog extends Model<
 
   /**
    * 新規にレコードを挿入する
-   * @param record 
+   * @param record
    * @returns インサートしたレコード
    */
-  static async insertRecord(
-    record: {
-      channelId: string,
-      guildId: string | null,
-      messageId: string,
-      userId: string,
-      userName: string,
-      discriminator: string,
-      stampId: string,
-    },
-  ): Promise<StorageStampLog> {
+  static async insertRecord(record: {
+    channelId: string;
+    guildId: string | null;
+    messageId: string;
+    userId: string;
+    userName: string;
+    stampName: string;
+  }): Promise<StorageStampLog> {
     try {
       const res = await StorageStampLog.create(record);
       return res;
@@ -77,7 +72,6 @@ export class StorageStampLog extends Model<
       throw new Error('レコード作成に失敗しました');
     }
   }
-
 }
 
 export default (sequelize: Sequelize) => {
@@ -85,8 +79,9 @@ export default (sequelize: Sequelize) => {
     {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
       channelId: {
         type: DataTypes.STRING,
@@ -108,11 +103,7 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      discriminator: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      stampId: {
+      stampName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -123,8 +114,10 @@ export default (sequelize: Sequelize) => {
     },
     {
       sequelize,
-      modelName: 'storage_stamp_log',
+      modelName: 'storage_stamp_logs',
       timestamps: true,
+      createdAt: true,
+      updatedAt: false,
     }
   );
 

@@ -2,11 +2,12 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('storage_stamp_log', {
+    await queryInterface.createTable('storage_stamp_logs', {
       id: {
         type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
       channelId: {
         type: Sequelize.STRING,
@@ -33,14 +34,9 @@ module.exports = {
         comment: 'ユーザー名',
         allowNull: false,
       },
-      discriminator: {
+      stampName: {
         type: Sequelize.STRING,
-        comment: 'ユーザー識別子',
-        allowNull: false,
-      },
-      stampId: {
-        type: Sequelize.STRING,
-        comment: 'スタンプID',
+        comment: 'スタンプ名',
         allowNull: false,
       },
       createdAt: {
@@ -51,6 +47,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('storage_stamp_log');
+    await queryInterface.dropTable('storage_stamp_logs');
   },
 };

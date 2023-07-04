@@ -8,6 +8,8 @@ services:
     working_dir: /app
     ports:
       - '3000:3000'
+    networks:
+      - external
     environment:
       - NODE_ENV=local
       - CHOKIDAR_USEPOLLING=true

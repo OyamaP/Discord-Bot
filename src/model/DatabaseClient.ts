@@ -1,14 +1,13 @@
 import { Sequelize } from 'sequelize';
-import initStorageStampLog, { StorageStampLog }
-  from './StorageStampLog.js';
-import sequelizeConfig from './config.js';
+import initStorageStampLog, { StorageStampLog } from './StorageStampLog.js';
+import sequelizeConfig from './config/config.js';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
 // ENVのユニオン型を定義するのでクラス外に記載
 const envStrings = ['local', 'development', 'production'] as const;
-type ENV = typeof envStrings[number];
+type ENV = (typeof envStrings)[number];
 
 export default class DatabaseClient {
   public sequelize: Sequelize;
@@ -38,15 +37,16 @@ export default class DatabaseClient {
    * 1. 引数の値
    * 2. 環境変数NODE_ENVの値
    * 3. local
-   * @param env 
-   * @returns 
+   * @param env
+   * @returns
    */
   private getConfig(env?: string) {
     const ENV = env || process.env.NODE_ENV;
     if (this.isENV(ENV)) {
       return sequelizeConfig[ENV];
     }
-    console.warn(`環境変数:${String(ENV)} は許可されてない値です。ローカルのconfigを利用します`);
+    const message = `環境変数:${String(ENV)} は許可されてない値です`;
+    console.warn(message);
 
     return sequelizeConfig.local;
   }
@@ -66,6 +66,5 @@ export default class DatabaseClient {
   /**
    * テーブル間の関連付けを行う
    */
-  private associate() {
-  };
+  private associate() {}
 }

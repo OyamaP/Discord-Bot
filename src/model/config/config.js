@@ -1,6 +1,10 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+// sequelize-cli ではTSをサポートしていないためJSファイルで設定
+// sequelize-cli は主にmigration, seed の実行で利用する
+// またModelからのアクセスにも利用し最終ビルドファイルにも含まれる
+
 export default {
   local: {
     use_env_variable: 'CONNECTION_URI_LOCAL',

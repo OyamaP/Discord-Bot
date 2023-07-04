@@ -1,7 +1,12 @@
+import { Message, APIEmbedAuthor } from 'discord.js';
 import IMessageEvent from './IMessageEvent.js';
 import fetchFileLinks from '../../storage/fetchFileLinks.js';
 import { sendImageToChannel } from '../../send/sendImageToChannel.js';
-import { Message, APIEmbedAuthor } from 'discord.js';
+import DatabaseClient from '../../model/DatabaseClient.js';
+
+// メッセージを検知する度にStampEventクラスが初期化される
+// DatabaseClientクラスの多重初期化を避けるためStampEventクラス外で初期化
+const client = new DatabaseClient();
 
 /**
  * Discord スタンプ(絵文字)利用された場合のイベント
@@ -29,8 +34,18 @@ export default class StampEvent implements IMessageEvent {
       });
 
       // Discord にスタンプ画像を送信
-      sendImageToChannel(imageLinks, message.channel, {
+      await sendImageToChannel(imageLinks, message.channel, {
         author: this.toAutorEmbed(message),
+      });
+
+      // 結果をDBに保存する
+      client.StorageStampLog.insertRecord({
+        channelId: message.channelId,
+        guildId: message.guildId,
+        messageId: message.id,
+        userId: message.author.id,
+        userName: message.author.username,
+        stampName,
       });
     } catch (e: any) {
       console.error(e);
