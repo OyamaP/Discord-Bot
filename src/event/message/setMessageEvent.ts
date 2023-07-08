@@ -6,7 +6,7 @@ import initChannelType from '../../detector/initChannelType.js';
  */
 export function setMessageEvent(message: Message): void {
   if (message.author.bot) return;
-  const { channelId, guildId, content, createdTimestamp } = message;
+  const { channelId, guildId, content } = message;
   const { username } = message.author;
   console.log({
     channelId,
@@ -15,7 +15,6 @@ export function setMessageEvent(message: Message): void {
     userId: message.author.id,
     userName: username,
     content,
-    timestamp: new Date(createdTimestamp),
   });
 
   try {

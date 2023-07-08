@@ -15,28 +15,33 @@ const initDropbox = () => {
 export const fetchPathDisplays = async (
   fileName: string,
   pathName: string
-): Promise<string[] | null> => {
-  const metaData = await fetchFileMetadata(fileName, pathName);
-  if (metaData === null) return null;
+): Promise<string[]> => {
+  try {
+    const metaData = await fetchFileMetadata(fileName, pathName);
+    if (metaData.length === 0) throw new Error();
 
-  const pathDisplays = metaData
-    // metadataには類似した検索結果が含まれるため、厳密に名前を取り出す必要がある
-    // 取得したファイル名には拡張子が含まれるため、split()で取り出して比較する
-    .filter((metadata) => metadata.metadata.name.split('.')[0] === fileName)
-    // path_display は型にundefinedを含むため除外する必要がある
-    .map((data) => data.metadata.path_display)
-    .filter(
-      (pathDisplay): pathDisplay is Exclude<typeof pathDisplay, undefined> =>
-        pathDisplay !== undefined
-    );
+    const pathDisplays = metaData
+      // metadataには類似した検索結果が含まれるため、厳密に名前を取り出す必要がある
+      // 取得したファイル名には拡張子が含まれるため、split()で取り出して比較する
+      .filter((metadata) => metadata.metadata.name.split('.')[0] === fileName)
+      // path_display は型にundefinedを含むため除外する必要がある
+      .map((data) => data.metadata.path_display)
+      .filter(
+        (pathDisplay): pathDisplay is Exclude<typeof pathDisplay, undefined> =>
+          pathDisplay !== undefined
+      );
 
-  return pathDisplays;
+    return pathDisplays;
+  } catch (e: any) {
+    console.error(`Failed search file paths. => ${pathName}/${fileName}`);
+    return [];
+  }
 };
 
 const fetchFileMetadata = async (
   fileName: string,
   pathName: string
-): Promise<files.MetadataV2Metadata[] | null> => {
+): Promise<files.MetadataV2Metadata[]> => {
   try {
     const dbx = initDropbox();
     const response = await dbx.filesSearchV2({
@@ -56,8 +61,8 @@ const fetchFileMetadata = async (
 
     return metadata;
   } catch (e) {
-    console.error(`Failed search files. => ${pathName}/${fileName}`);
-    return null;
+    console.error(`Failed search file metadata. => ${pathName}/${fileName}`);
+    return [];
   }
 };
 

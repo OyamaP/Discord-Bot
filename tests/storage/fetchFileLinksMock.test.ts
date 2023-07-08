@@ -11,7 +11,6 @@ describe('fetchFileLinks: mock', () => {
     const pathName = '/123456789001010101';
     const fileLinks = await fetchFileLinks(fileName, pathName);
 
-    if (fileLinks === null) throw new Error();
     fileLinks.forEach((fileLink) => {
       expect(fileLink).toBe(
         'https://dl.dropboxusercontent.com/s/testdir/test_filename.jpg?dl=0'
@@ -26,7 +25,7 @@ describe('fetchFileLinks: mock', () => {
     const fileName = 'test_filename';
     const pathName = '/123456789001010101';
     const fileLinks = await fetchFileLinks(fileName, pathName);
-    expect(fileLinks).toBe(null);
+    expect(fileLinks.length).toBe(0);
   });
 
   test('異常系: ファイルのリンクを取得する際、共有リンク取得/作成に失敗', async () => {
@@ -41,6 +40,6 @@ describe('fetchFileLinks: mock', () => {
     const fileName = 'test_filename';
     const pathName = '/123456789001010101';
     const fileLinks = await fetchFileLinks(fileName, pathName);
-    expect(fileLinks).toBe(null);
+    expect(fileLinks.length).toBe(0);
   });
 });

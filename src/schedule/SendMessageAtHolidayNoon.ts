@@ -19,7 +19,8 @@ export default class SendMessageAtHolidayNoon extends AbstructSendMessageSchedul
       // 祝日昼のスタンプを取得
       const stampName = 'neka_noon';
       const imageLinks = await fetchFileLinks(stampName, `/${this.channelId}`);
-      if (imageLinks === null) return;
+      if (imageLinks.length === 0)
+        throw new Error(`Failed get file links. => ${stampName}`);
 
       // Discord にスタンプ画像を送信
       await sendImageToChannel(imageLinks, this.channel);
