@@ -1,7 +1,7 @@
-import IMessageEvent from "./IMessageEvent.js";
-import { fetchFileLinks } from "../../storage/fetchFileLinks.js";
-import { sendImageToChannel } from "../../send/sendImageToChannel.js";
-import { Message } from "discord.js";
+import IMessageEvent from './IMessageEvent.js';
+import fetchFileLinks from '../../storage/fetchFileLinks.js';
+import { sendImageToChannel } from '../../send/sendImageToChannel.js';
+import { Message } from 'discord.js';
 
 /**
  * 朝の特定時間に誰かが発言した際に発生するイベント
@@ -21,7 +21,7 @@ export default class MorningEvent implements IMessageEvent {
     return morningTimes.includes(hour);
   }
 
-  public async launchEvent(message: Message, channelId: string): Promise<void> {
+  public async launchEvent(message: Message): Promise<void> {
     // 50% の確率 && 15分経過していればイベントを実行する
     if (
       !this.isRandomGreaterThanArg(0.5) ||
@@ -34,9 +34,10 @@ export default class MorningEvent implements IMessageEvent {
 
     try {
       // 睡眠中のスタンプを取得
-      const stampName = "hsn_huton";
-      const imageLinks = await fetchFileLinks(stampName, `/${channelId}`);
-      if (imageLinks === null) return;
+      const stampName = 'hsn_huton';
+      const imageLinks = await fetchFileLinks(stampName, `/${message.guildId}`);
+      if (imageLinks.length === 0)
+        throw new Error(`Failed get file links. => ${stampName}`);
 
       // Discord にスタンプ画像を送信
       sendImageToChannel(imageLinks, message.channel);

@@ -1,9 +1,9 @@
-import { Client } from "discord.js";
-import { ISendMessageSchedule } from "./ISchedule.js";
+import { Client } from 'discord.js';
+import { ISendMessageSchedule } from './ISchedule.js';
 import {
   SendingExecutableChannel,
   isSendingExecutableChannel,
-} from "../send/sendImageToChannel.js";
+} from '../send/sendImageToChannel.js';
 
 /**
  * メッセージ送信スケジュールの抽象クラス
@@ -23,7 +23,7 @@ export default abstract class AbstructSendMessageSchedule
       throw new Error(`${channelId}のチャンネルIDは見つかりませんでした`);
     }
     if (!isSendingExecutableChannel(channel)) {
-      throw new Error(`${channel.id}のチャンネルIDには送信できません`);
+      throw new Error(`${channelId}のチャンネルIDには送信できません`);
     }
 
     this.channel = channel;

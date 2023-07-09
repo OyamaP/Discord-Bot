@@ -4,8 +4,8 @@
  * @returns 分割後の文字配列
  */
 export function toSplitArray(str: string): string[] {
-  const strExcludedFromSpaces = str.replace(/\s|　/g, "");
-  const splitArray = strExcludedFromSpaces.split(",");
+  const strExcludedFromSpaces = str.replace(/\s|　/g, '');
+  const splitArray = strExcludedFromSpaces.split(',');
 
   return splitArray;
 }

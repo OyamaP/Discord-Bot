@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Message } from 'discord.js';
 
 /**
  * メッセージイベントを定義する際はこのインターフェイスを利用して登録する
@@ -13,7 +13,6 @@ export default interface IMessageEvent {
   /**
    * イベント処理を開始する
    * @param message
-   * @param channelId
    */
-  launchEvent(message: Message, channelId: string): Promise<void>;
+  launchEvent(message: Message): Promise<void>;
 }

@@ -1,25 +1,19 @@
-import { Message } from "discord.js";
-import { IChannelGroupType } from "./IChannelGroupType.js";
-import { toSplitArray } from "./toSplitArray.js";
-import * as dotenv from "dotenv";
+import { Client, Message } from 'discord.js';
+import { IChannelType } from './IChannelType.js';
+import { toSplitArray } from './toSplitArray.js';
+import * as dotenv from 'dotenv';
 dotenv.config();
 const { DISCORD_PREMIUM_CHANNEL_ID } = process.env;
 
-export default class PremiumChannelType implements IChannelGroupType {
-  readonly channelId: string;
-
-  constructor(channelId: string) {
-    this.channelId = channelId;
-  }
-
-  public isTarget(): boolean {
+export default class PremiumChannelType implements IChannelType {
+  public isTarget(channelId: string): boolean {
     if (DISCORD_PREMIUM_CHANNEL_ID === undefined) return false;
     const channelIds = toSplitArray(DISCORD_PREMIUM_CHANNEL_ID);
 
-    return channelIds.includes(this.channelId);
+    return channelIds.includes(channelId);
   }
 
-  public launchReadyEvent(): void {
+  public launchReadyEvent(client: Client): void {
     // 設定無し
   }
 

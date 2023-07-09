@@ -1,5 +1,5 @@
-import axios from "axios";
-import * as dotenv from "dotenv";
+import axios from 'axios';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 /**
@@ -7,14 +7,14 @@ dotenv.config();
  */
 
 const options = {
-  method: "POST",
-  url: "https://api.dropbox.com/oauth2/token",
-  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  method: 'POST',
+  url: 'https://api.dropbox.com/oauth2/token',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   data: {
     client_id: process.env.DROPBOX_ID,
     client_secret: process.env.DROPBOX_SECRET,
     code: process.env.DROPBOX_ACCESS_CODE,
-    grant_type: "authorization_code",
+    grant_type: 'authorization_code',
   },
 };
 
