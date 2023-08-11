@@ -11,10 +11,11 @@ docker build ./ --target production -t discord-bot-build --build-arg BUILDKIT_IN
 ```
 
 - 起動
-  ローカルでのビルド結果確認をする場合 env ファイルを読み込ませる必要あり
+
+ローカルでのビルド結果確認をする場合 env ファイルを読み込ませる必要あり
 
 ```bash
-docker run -d -p 3000:3000 --name discord-bot-build --env-file ./.env discord-bot-build
+docker run -d -p 8000:8000 --name discord-bot-build --env-file ./.env discord-bot-build
 ```
 
 ## docker-compose

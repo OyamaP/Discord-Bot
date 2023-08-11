@@ -1,14 +1,14 @@
-type ENV = 'local' | 'development' | 'production';
+import { ENV } from '../type.ts';
 
-type Option = {
+export type Option = {
   use_env_variable: string;
   logging: boolean;
   timezone: string;
 };
 
-type SequelizeConfig = Record<ENV, Option>;
+export type SequelizeConfig = Record<ENV, Option>;
 
 export declare module './config.js' {
-  const config: Config;
+  const config: SequelizeConfig;
   export default config;
 }
