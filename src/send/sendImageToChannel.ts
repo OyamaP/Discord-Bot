@@ -21,7 +21,7 @@ export type SendingExecutableChannel = Exclude<
  * @returns
  */
 export function isSendingExecutableChannel(
-  channel: Channel
+  channel: Readonly<Channel>
 ): channel is SendingExecutableChannel {
   return 'send' in channel;
 }
@@ -31,9 +31,9 @@ export function isSendingExecutableChannel(
  * @param message
  */
 export async function sendImageToChannel(
-  imageLinks: string[],
-  channel: SendingExecutableChannel,
-  option?: { author?: APIEmbedAuthor }
+  imageLinks: readonly string[],
+  channel: Readonly<SendingExecutableChannel>,
+  option?: Readonly<{ author?: APIEmbedAuthor }>
 ): Promise<void> {
   const embeds = imageLinks.map((imageLink) => {
     return {

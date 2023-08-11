@@ -17,7 +17,7 @@ export default abstract class AbstructSendMessageSchedule
   abstract regist(): void;
   abstract send(): Promise<void>;
 
-  constructor(client: Client, channelId: string) {
+  constructor(client: Readonly<Client>, channelId: string) {
     const channel = client.channels.cache.get(channelId);
     if (channel === undefined) {
       throw new Error(`${channelId}のチャンネルIDは見つかりませんでした`);

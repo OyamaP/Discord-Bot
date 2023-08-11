@@ -18,7 +18,7 @@ const initDropbox = () => {
  * @returns ダウンロードリンク
  */
 export const fetchDownloadLinks = async (
-  pathDisplays: string[]
+  pathDisplays: readonly string[]
 ): Promise<string[]> => {
   return Promise.all(
     pathDisplays.map(async (pathDisplay) => {

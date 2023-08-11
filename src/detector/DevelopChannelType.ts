@@ -21,7 +21,7 @@ export default class DevelopChannelType implements IChannelType {
     return channelIds.includes(channelId);
   }
 
-  public launchReadyEvent(client: Client): void {
+  public launchReadyEvent(client: Readonly<Client>): void {
     if (DISCORD_DEVELOP_CHANNEL_ID === undefined) return;
     const channelIds = toSplitArray(DISCORD_DEVELOP_CHANNEL_ID);
     // 初期化時に失敗するchannelIdがあった場合でも、処理を止めずに設定する
@@ -37,7 +37,7 @@ export default class DevelopChannelType implements IChannelType {
     });
   }
 
-  public launchMessageEvent(message: Message<boolean>): void {
+  public launchMessageEvent(message: Readonly<Message>): void {
     const targetEvent = EventArray.find((event) =>
       event.isTargetEvent(message)
     );

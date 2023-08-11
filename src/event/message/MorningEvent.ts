@@ -21,7 +21,7 @@ export default class MorningEvent implements IMessageEvent {
     return morningTimes.includes(hour);
   }
 
-  public async launchEvent(message: Message): Promise<void> {
+  public async launchEvent(message: Readonly<Message>): Promise<void> {
     // 50% の確率 && 15分経過していればイベントを実行する
     if (
       !this.isRandomGreaterThanArg(0.5) ||

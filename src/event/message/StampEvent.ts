@@ -17,11 +17,11 @@ export default class StampEvent implements IMessageEvent {
    * @param message メッセージ
    * @returns スタンプ判定
    */
-  public isTargetEvent(message: Message): boolean {
+  public isTargetEvent(message: Readonly<Message>): boolean {
     return /^<:(.+):(.+)>$/.test(message.content);
   }
 
-  public async launchEvent(message: Message): Promise<void> {
+  public async launchEvent(message: Readonly<Message>): Promise<void> {
     try {
       // Dropbox からスタンプ画像のリンクを取得してくる
       const stampName = this.toStampName(message);
@@ -56,7 +56,7 @@ export default class StampEvent implements IMessageEvent {
    * @param message メッセージ
    * @returns スタンプ名
    */
-  private toStampName(message: Message): string {
+  private toStampName(message: Readonly<Message>): string {
     const match = message.content.match(/:(.+):/);
     if (match === null)
       throw new Error(`Failed match stamp name. => ${message.content}`);
@@ -68,7 +68,7 @@ export default class StampEvent implements IMessageEvent {
    * @param message
    * @returns
    */
-  private toAutorEmbed(message: Message): APIEmbedAuthor {
+  private toAutorEmbed(message: Readonly<Message>): APIEmbedAuthor {
     const discordAppIconUrl = 'https://cdn.discordapp.com/embed/avatars/0.png';
     const userName = message.member?.nickname || message.author.username;
     const userIcon = message.author.avatarURL() || discordAppIconUrl;

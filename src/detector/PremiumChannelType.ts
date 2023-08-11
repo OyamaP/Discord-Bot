@@ -13,11 +13,11 @@ export default class PremiumChannelType implements IChannelType {
     return channelIds.includes(channelId);
   }
 
-  public launchReadyEvent(client: Client): void {
+  public launchReadyEvent(client: Readonly<Client>): void {
     // 設定無し
   }
 
-  public launchMessageEvent(message: Message<boolean>): void {
+  public launchMessageEvent(message: Readonly<Message>): void {
     // 設定なし
   }
 }
