@@ -8,7 +8,7 @@ RUN apk --update add --no-cache tzdata tini &&\
 # PID1問題でtiniを利用する
 ENTRYPOINT ["/sbin/tini", "--"]
 USER node
-EXPOSE 3000
+EXPOSE 8000
 
 
 # builder #

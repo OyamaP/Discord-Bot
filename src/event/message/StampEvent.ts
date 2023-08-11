@@ -38,7 +38,7 @@ export default class StampEvent implements IMessageEvent {
       });
 
       // 結果をDBに保存する
-      client.StorageStampLog.insertRecord({
+      await client.StorageStampLog.insertRecord({
         channelId: message.channelId,
         guildId: message.guildId,
         messageId: message.id,

@@ -21,9 +21,11 @@ export default class DatabaseClient {
    * Sequelizeを初期化する
    * @returns
    */
-  private initSequelize(env?: string) {
+  private initSequelize(env?: string): Sequelize {
     const config = this.getOption(env);
-    const uri = process.env[config.use_env_variable] || 'CONNECTION_URI_LOCAL';
+    const envVariable = config.use_env_variable;
+    const uri = process.env[envVariable];
+    if (uri === undefined) throw new Error('DB接続URIが定義されていません');
 
     return new Sequelize(uri, config);
   }
