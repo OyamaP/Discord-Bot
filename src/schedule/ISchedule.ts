@@ -1,20 +1,12 @@
-import { SendingExecutableChannel } from '../send/sendImageToChannel.js';
+import { BigString, Bot } from "discord";
 
 export interface ISchedule {
   regist(...any: any): void;
 }
 
 export interface ISendMessageSchedule extends ISchedule {
-  /**
-   * send()実行可能なチャンネル
-   */
-  readonly channel: SendingExecutableChannel;
-
-  /**
-   * チャンネルID
-   */
-  readonly channelId: string;
-
+  readonly bot: Bot;
+  readonly channelId: BigString;
   /**
    * スケジュールを登録する
    */

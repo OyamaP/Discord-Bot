@@ -1,13 +1,13 @@
 import {
-  Model,
-  Sequelize,
-  InferAttributes,
-  InferCreationAttributes,
   CreationOptional,
   DataTypes,
-  WhereOptions,
   FindOptions,
-} from 'sequelize';
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+  Sequelize,
+  WhereOptions,
+} from "sequelize";
 
 export class StorageStampLog extends Model<
   InferAttributes<StorageStampLog>,
@@ -47,7 +47,7 @@ export class StorageStampLog extends Model<
       return res;
     } catch (e) {
       console.error(e);
-      throw new Error('データの取得に失敗しました');
+      throw new Error("データの取得に失敗しました");
     }
   }
 
@@ -69,7 +69,7 @@ export class StorageStampLog extends Model<
       return res;
     } catch (e) {
       console.error(e);
-      throw new Error('レコード作成に失敗しました');
+      throw new Error("レコード作成に失敗しました");
     }
   }
 }
@@ -114,11 +114,11 @@ export default (sequelize: Sequelize) => {
     },
     {
       sequelize,
-      modelName: 'storage_stamp_logs',
+      modelName: "storage_stamp_logs",
       timestamps: true,
       createdAt: true,
       updatedAt: false,
-    }
+    },
   );
 
   return StorageStampLog;

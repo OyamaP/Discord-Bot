@@ -1,10 +1,10 @@
-import { Sequelize } from 'sequelize';
-import initStorageStampLog, { StorageStampLog } from './StorageStampLog.js';
-import sequelizeConfig, { Option } from './config/config.js';
-import { envStrings, ENV } from './type.js';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import "env";
+import { Sequelize } from "sequelize";
+import "mysql2";
+import initStorageStampLog, { StorageStampLog } from "./StorageStampLog.ts";
+// @deno-types="./config/config.d.ts"
+import sequelizeConfig from "./config/config.js";
+import { ENV, ENV_STRINGS } from "./type.ts";
 
 export default class DatabaseClient {
   private readonly sequelize: Sequelize;
@@ -22,12 +22,12 @@ export default class DatabaseClient {
    * @returns
    */
   private initSequelize(env?: string): Sequelize {
-    const config = this.getOption(env);
-    const envVariable = config.use_env_variable;
-    const uri = process.env[envVariable];
-    if (uri === undefined) throw new Error('DB接続URIが定義されていません');
+    const option = this.getOption(env);
+    const envVariable = option.use_env_variable;
+    const uri = Deno.env.get(envVariable);
+    if (uri === undefined) throw new Error("DB接続URIが定義されていません");
 
-    return new Sequelize(uri, config);
+    return new Sequelize(uri, option);
   }
 
   /**
@@ -39,8 +39,8 @@ export default class DatabaseClient {
    * @param env
    * @returns
    */
-  private getOption(env?: string): Option {
-    const ENV = env || process.env.NODE_ENV;
+  private getOption(env?: string): typeof sequelizeConfig[ENV] {
+    const ENV = env || Deno.env.get("NODE_ENV");
     if (this.isENV(ENV)) {
       return sequelizeConfig[ENV];
     }
@@ -56,14 +56,21 @@ export default class DatabaseClient {
    * @returns
    */
   private isENV(env: unknown): env is ENV {
-    if (typeof env !== 'string') return false;
+    if (typeof env !== "string") return false;
 
     // includes()は利用できないためsome()で代用
-    return envStrings.some((envString) => envString === env);
+    return ENV_STRINGS.some((envString) => envString === env);
   }
 
   /**
    * テーブル間の関連付けを行う
    */
   private associate() {}
+
+  // public async test() {
+  //   await this.sequelize.authenticate();
+  //   await this.sequelize.sync({
+  //     alter: true
+  //   })
+  // }
 }

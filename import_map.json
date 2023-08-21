@@ -1,0 +1,11 @@
+{
+  "imports": {
+    "axios": "https://cdn.skypack.dev/redaxios@0.5.1?dts",
+    "env": "https://deno.land/std@0.198.0/dotenv/load.ts",
+    "discord": "https://deno.land/x/discordeno@18.0.1/mod.ts",
+    "dropbox": "npm:dropbox@10.34.0",
+    "mysql2": "npm:mysql2@3.4.3",
+    "sequelize": "npm:sequelize@6.32.1",
+    "cron": "npm:node-cron@3.0.2"
+  }
+}

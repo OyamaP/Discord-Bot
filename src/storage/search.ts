@@ -1,20 +1,9 @@
-import { Dropbox, files } from 'dropbox';
-import * as dotenv from 'dotenv';
-dotenv.config();
-
-const initDropbox = () => {
-  const dbx = new Dropbox({
-    clientId: process.env.DROPBOX_ID,
-    clientSecret: process.env.DROPBOX_SECRET,
-    refreshToken: process.env.DROPBOX_REFRESH_TOKEN,
-  });
-
-  return dbx;
-};
+import { files } from "dropbox";
+import initDropbox from "./initDropbox.ts";
 
 export const fetchPathDisplays = async (
   fileName: string,
-  pathName: string
+  pathName: string,
 ): Promise<string[]> => {
   try {
     const metaData = await fetchFileMetadata(fileName, pathName);
@@ -23,12 +12,12 @@ export const fetchPathDisplays = async (
     const pathDisplays = metaData
       // metadataには類似した検索結果が含まれるため、厳密に名前を取り出す必要がある
       // 取得したファイル名には拡張子が含まれるため、split()で取り出して比較する
-      .filter((metadata) => metadata.metadata.name.split('.')[0] === fileName)
+      .filter((metadata) => metadata.metadata.name.split(".")[0] === fileName)
       // path_display は型にundefinedを含むため除外する必要がある
       .map((data) => data.metadata.path_display)
       .filter(
         (pathDisplay): pathDisplay is Exclude<typeof pathDisplay, undefined> =>
-          pathDisplay !== undefined
+          pathDisplay !== undefined,
       );
 
     return pathDisplays;
@@ -40,7 +29,7 @@ export const fetchPathDisplays = async (
 
 const fetchFileMetadata = async (
   fileName: string,
-  pathName: string
+  pathName: string,
 ): Promise<files.MetadataV2Metadata[]> => {
   try {
     const dbx = initDropbox();
@@ -67,7 +56,7 @@ const fetchFileMetadata = async (
 };
 
 const isMetadataV2Metadata = (
-  value: unknown
+  value: unknown,
 ): value is files.MetadataV2Metadata => {
-  return value !== null && typeof value === 'object' && 'metadata' in value;
+  return value !== null && typeof value === "object" && "metadata" in value;
 };

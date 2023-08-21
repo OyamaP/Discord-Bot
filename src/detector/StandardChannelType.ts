@@ -1,13 +1,13 @@
-import { Client, Message } from 'discord.js';
-import { IChannelType } from './IChannelType.js';
-import { ISchedule } from '../schedule/ISchedule.js';
-import SendMessageAtHolidayNoon from '../schedule/SendMessageAtHolidayNoon.js';
-import { toSplitArray } from './toSplitArray.js';
-import MorningEvent from '../event/message/MorningEvent.js';
-import StampEvent from '../event/message/StampEvent.js';
-import * as dotenv from 'dotenv';
-dotenv.config();
-const { DISCORD_STANDARD_CHANNEL_ID } = process.env;
+import { Bot, Message } from "discord";
+import { Payload } from "../type.ts";
+import { IChannelType } from "./IChannelType.ts";
+import { ISchedule } from "../schedule/ISchedule.ts";
+import SendMessageAtHolidayNoon from "../schedule/SendMessageAtHolidayNoon.ts";
+import { toSplitArray } from "./toSplitArray.ts";
+import MorningEvent from "../event/message/MorningEvent.ts";
+import StampEvent from "../event/message/StampEvent.ts";
+
+const { DISCORD_STANDARD_CHANNEL_ID } = Deno.env.toObject();
 
 // 配列の上から順に優先度の高いイベントを実行する
 // クラスや関数内で初期化すると状態管理ができなくなるため外で初期化
@@ -21,14 +21,17 @@ export default class StandardChannelType implements IChannelType {
     return channelIds.includes(channelId);
   }
 
-  public launchReadyEvent(client: Readonly<Client>): void {
+  public launchReadyEvent(
+    bot: Readonly<Bot>,
+    _payload: Readonly<Payload>,
+  ): void {
     if (DISCORD_STANDARD_CHANNEL_ID === undefined) return;
     const channelIds = toSplitArray(DISCORD_STANDARD_CHANNEL_ID);
     // 初期化時に失敗するchannelIdがあった場合でも、処理を止めずに設定する
     channelIds.forEach((channelId) => {
       try {
         const schedules: ISchedule[] = [
-          new SendMessageAtHolidayNoon(client, channelId),
+          new SendMessageAtHolidayNoon(bot, channelId),
         ];
         schedules.forEach((schedule) => schedule.regist());
       } catch (e: any) {
@@ -37,11 +40,14 @@ export default class StandardChannelType implements IChannelType {
     });
   }
 
-  public launchMessageEvent(message: Readonly<Message>): void {
+  public launchMessageEvent(
+    bot: Readonly<Bot>,
+    message: Readonly<Message>,
+  ): void {
     const targetEvent = EventArray.find((event) =>
       event.isTargetEvent(message)
     );
     if (targetEvent === undefined) return;
-    targetEvent.launchEvent(message);
+    targetEvent.launchEvent(bot, message);
   }
 }

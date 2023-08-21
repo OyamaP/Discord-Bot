@@ -1,6 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
-
 // sequelize-cli ではTSをサポートしていないためJSファイルで記述する必要がある。
 // sequelize-cli でmigration, seed の実行をするためにconfigを読み取っている。
 // またModelからのアクセスにもconfigを利用DBにアクセスしており、最終ビルドファイルにも含まれる。
@@ -8,6 +5,7 @@ dotenv.config();
 // - tsconfig.json => compilerOptions.allowJs をtrue にする
 // - jest.config.cjs => transform の対象にjs を含める
 
+/** @type {import("./config.d.ts")} */
 export default {
   local: {
     use_env_variable: 'CONNECTION_URI_LOCAL',

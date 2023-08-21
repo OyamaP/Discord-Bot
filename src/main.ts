@@ -1,21 +1,22 @@
-import { Client, GatewayIntentBits } from 'discord.js';
-import { setReadyEvent } from './event/ready/setReadyEvent.js';
-import { setMessageEvent } from './event/message/setMessageEvent.js';
-import * as dotenv from 'dotenv';
-dotenv.config();
-const { DISCORD_TOKEN } = process.env;
+import "env";
+import { Bot, createBot, Intents, Message, startBot } from "discord";
+import { setReadyEvent } from "./event/ready/setReadyEvent.ts";
+import { setMessageEvent } from "./event/message/setMessageEvent.ts";
+import { Payload } from "./type.ts";
 
-function main() {
-  const client = new Client({
-    intents: [
-      GatewayIntentBits.Guilds,
-      GatewayIntentBits.GuildMessages,
-      GatewayIntentBits.MessageContent,
-    ],
-  });
-  client.on('ready', setReadyEvent);
-  client.on('messageCreate', setMessageEvent);
-  client.login(DISCORD_TOKEN);
-}
+const { DISCORD_TOKEN } = Deno.env.toObject();
 
-main();
+const bot = createBot({
+  token: DISCORD_TOKEN,
+  intents: Intents.Guilds | Intents.GuildMessages | Intents.MessageContent,
+  events: {
+    ready(bot: Readonly<Bot>, payload: Readonly<Payload>) {
+      setReadyEvent(bot, payload);
+    },
+    messageCreate(bot: Readonly<Bot>, message: Readonly<Message>) {
+      setMessageEvent(bot, message);
+    },
+  },
+});
+
+await startBot(bot);
