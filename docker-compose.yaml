@@ -1,13 +1,13 @@
-version: '3.8'
+version: "3.8"
 services:
   app:
     build:
       context: .
-      target: setting
+      target: deno
     container_name: discord-bot-app
     working_dir: /app
     ports:
-      - '3000:3000'
+      - "8000:8000"
     networks:
       - external
     environment:
@@ -15,12 +15,13 @@ services:
       - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./:/app
+    tty: true
     command:
       - ash
-      - -c
-      - |
-        [ -d ./node_modules ] || npm ci
-        npx nodemon src/main.ts
+    # - -c
+    # - |
+    #   [ -d ./node_modules ] || npm ci
+    #   npx nodemon src/main.ts
 
   db:
     image: mysql:8.0
