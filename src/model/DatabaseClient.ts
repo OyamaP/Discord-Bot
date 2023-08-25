@@ -1,18 +1,15 @@
 import { Sequelize } from 'sequelize';
 import initStorageStampLog, { StorageStampLog } from './StorageStampLog.js';
-import sequelizeConfig from './config/config.js';
+import sequelizeConfig, { Option } from './config/config.js';
+import { envStrings, ENV } from './type.js';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-// ENVのユニオン型を定義するのでクラス外に記載
-const envStrings = ['local', 'development', 'production'] as const;
-type ENV = (typeof envStrings)[number];
-
 export default class DatabaseClient {
-  public sequelize: Sequelize;
+  private readonly sequelize: Sequelize;
 
-  public StorageStampLog: typeof StorageStampLog;
+  public readonly StorageStampLog: typeof StorageStampLog;
 
   constructor(env?: string) {
     this.sequelize = this.initSequelize(env);
@@ -24,15 +21,17 @@ export default class DatabaseClient {
    * Sequelizeを初期化する
    * @returns
    */
-  private initSequelize(env?: string) {
-    const config = this.getConfig(env);
-    const uri = process.env[config.use_env_variable] || 'CONNECTION_URI_LOCAL';
+  private initSequelize(env?: string): Sequelize {
+    const config = this.getOption(env);
+    const envVariable = config.use_env_variable;
+    const uri = process.env[envVariable];
+    if (uri === undefined) throw new Error('DB接続URIが定義されていません');
 
     return new Sequelize(uri, config);
   }
 
   /**
-   * 環境変数からSequelizeのアクセスに必要なconfigを呼び出す
+   * 環境変数からSequelizeのアクセスに必要なOptionを呼び出す
    * config優先度
    * 1. 引数の値
    * 2. 環境変数NODE_ENVの値
@@ -40,7 +39,7 @@ export default class DatabaseClient {
    * @param env
    * @returns
    */
-  private getConfig(env?: string) {
+  private getOption(env?: string): Option {
     const ENV = env || process.env.NODE_ENV;
     if (this.isENV(ENV)) {
       return sequelizeConfig[ENV];

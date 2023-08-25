@@ -4,7 +4,7 @@ import initChannelType from '../../detector/initChannelType.js';
 /**
  * メッセージを起因とするイベントを設定する
  */
-export function setMessageEvent(message: Message): void {
+export function setMessageEvent(message: Readonly<Message>): void {
   if (message.author.bot) return;
   const { channelId, guildId, content } = message;
   const { username } = message.author;
