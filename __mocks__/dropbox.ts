@@ -1,9 +1,9 @@
 class Dropbox {
-  async filesSearchV2() {
+  filesSearchV2() {
     const metadata = {
       metadata: {
-        name: 'test_filename.jpg',
-        path_display: '/123456789001010101/test_filename.jpg',
+        name: "test_filename.jpg",
+        path_display: "/123456789001010101/test_filename.jpg",
       },
     };
 
@@ -14,8 +14,8 @@ class Dropbox {
     };
   }
 
-  async sharingListSharedLinks() {
-    const url = 'https://www.dropbox.com/s/testdir/test_filename.jpg?dl=0';
+  sharingListSharedLinks() {
+    const url = "https://www.dropbox.com/s/testdir/test_filename.jpg?dl=0";
 
     return {
       result: {
@@ -24,8 +24,8 @@ class Dropbox {
     };
   }
 
-  async sharingCreateSharedLinkWithSettings() {
-    const url = 'https://www.dropbox.com/s/testdir/test_filename.jpg?dl=0';
+  sharingCreateSharedLinkWithSettings() {
+    const url = "https://www.dropbox.com/s/testdir/test_filename.jpg?dl=0";
 
     return {
       result: { url },

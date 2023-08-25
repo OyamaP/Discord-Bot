@@ -17,6 +17,6 @@ try {
     },
   });
   console.log(response.data);
-} catch (e: any) {
+} catch (e) {
   console.error(e);
 }

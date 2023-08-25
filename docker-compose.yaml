@@ -18,10 +18,9 @@ services:
     tty: true
     command:
       - ash
-    # - -c
-    # - |
-    #   [ -d ./node_modules ] || npm ci
-    #   npx nodemon src/main.ts
+      # - -c
+      # - |
+      # deno task watch
 
   db:
     image: mysql:8.0

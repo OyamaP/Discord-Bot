@@ -1,6 +1,7 @@
 import { BigString, Bot } from "discord";
 
 export interface ISchedule {
+  // deno-lint-ignore no-explicit-any
   regist(...any: any): void;
 }
 

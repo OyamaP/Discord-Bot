@@ -7,6 +7,3 @@ RUN apk --update add --no-cache tzdata tini &&\
 ENTRYPOINT ["/sbin/tini", "--"]
 USER deno
 EXPOSE 8000
-
-# CMD ["deno", "task", "start"]
-

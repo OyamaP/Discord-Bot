@@ -2,11 +2,7 @@ import { Bot, DiscordEmbedAuthor, Message } from "discord";
 import IMessageEvent from "./IMessageEvent.ts";
 import fetchFileLinks from "../../storage/fetchFileLinks.ts";
 import { sendImageToChannel } from "../../send/sendImageToChannel.ts";
-import DatabaseClient from "../../model/DatabaseClient.ts";
-
-// メッセージを検知する度にStampEventクラスが初期化される
-// DatabaseClientクラスの多重初期化を避けるためStampEventクラス外で初期化
-const client = new DatabaseClient();
+import dbAccessor from "../../model/DatabaseAccessor.ts";
 
 /**
  * Discord スタンプ(絵文字)利用された場合のイベント
@@ -43,7 +39,7 @@ export default class StampEvent implements IMessageEvent {
       const user = await bot.helpers.getUser(message.authorId);
 
       // 結果をDBに保存する
-      await client.StorageStampLog.insertRecord({
+      await dbAccessor.StampLog.insertRecord({
         channelId: String(message.channelId),
         guildId: String(message.guildId),
         messageId: String(message.id),
@@ -51,7 +47,7 @@ export default class StampEvent implements IMessageEvent {
         userName: user.username,
         stampName,
       });
-    } catch (e: any) {
+    } catch (e) {
       console.error(e);
     }
   }
@@ -78,11 +74,13 @@ export default class StampEvent implements IMessageEvent {
     bot: Readonly<Bot>,
     message: Readonly<Message>,
   ): Promise<DiscordEmbedAuthor> {
-    const user = await bot.helpers.getUser(message.authorId);
+    const [user, iconURL] = await Promise.all([
+      bot.helpers.getUser(message.authorId),
+      this.fetchAvatarURL(bot, message),
+    ]);
     const name = message.member?.nick || user.username;
-    const icon = await this.fetchAvatarURL(bot, message);
 
-    return { name, icon_url: icon };
+    return { name, icon_url: iconURL };
   }
 
   private async fetchAvatarURL(

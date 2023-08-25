@@ -1,17 +1,12 @@
 {
-  "compilerOptions": {
-    "strict": true
-  },
   "tasks": {
     "start": "deno run --allow-net --allow-env --allow-read src/main.ts",
     "watch": "deno run --watch --allow-net --allow-env --allow-read src/main.ts"
   },
   "importMap": "./import_map.json",
   "lint": {
-    "files": {
-      "include": ["**/*.ts"],
-      "exclude": []
-    },
+    "include": ["**/*.ts"],
+    "exclude": [],
     "rules": {
       "tags": ["recommended"],
       "include": [],
@@ -20,22 +15,18 @@
     "report": "pretty"
   },
   "fmt": {
-    "files": {
-      "include": ["**/*.ts"],
-      "exclude": []
-    },
-    "options": {
-      "indentWidth": 2,
-      "lineWidth": 80,
-      "semiColons": true,
-      "singleQuote": false,
-      "useTabs": false,
-      "proseWrap": "always"
-    }
+    "include": ["**/*.ts"],
+    "exclude": [],
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "semiColons": true,
+    "singleQuote": false,
+    "useTabs": false,
+    "proseWrap": "always"
   },
   "test": {
     "include": ["./tests/**/*.ts"],
     "exclude": []
   },
-  "nodeModulesDir": true
+  "exclude": ["./node_modules/"]
 }

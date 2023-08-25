@@ -24,7 +24,7 @@ export default async function fetchFileLinks(
     }
 
     return fileLinks;
-  } catch (e: any) {
+  } catch (e) {
     console.error(e);
     return [];
   }

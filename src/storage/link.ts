@@ -40,7 +40,8 @@ const fetchSharedLink = async (
     });
     const [link] = response.result.links;
     return link.url;
-  } catch {
+  } catch (e) {
+    console.error(e);
     console.log(`Failed fetch link. => pathDisplay: ${pathDisplay}`);
     return undefined;
   }
@@ -61,7 +62,8 @@ const createSharedLink = async (
     });
     return response.result.url;
   } catch (e) {
-    console.log(`Failed create link. => pathDisplay: ${pathDisplay}`);
+    console.error(e);
+    console.error(`Failed create link. => pathDisplay: ${pathDisplay}`);
     return undefined;
   }
 };

@@ -34,7 +34,7 @@ export default class DevelopChannelType implements IChannelType {
           new SendMessageAtHolidayNoon(bot, channelId),
         ];
         schedules.forEach((schedule) => schedule.regist());
-      } catch (e: any) {
+      } catch (e) {
         console.error(e);
       }
     });

@@ -1,4 +1,4 @@
-import { schedule } from "cron";
+import { cron } from "cron";
 import AbstructSendMessageSchedule from "./AbstructSendMessageSchedule.ts";
 import fetchFileLinks from "../storage/fetchFileLinks.ts";
 import { sendImageToChannel } from "../send/sendImageToChannel.ts";
@@ -10,7 +10,7 @@ export default class SendMessageAtHolidayNoon
   extends AbstructSendMessageSchedule {
   public regist(): void {
     // 毎週土日13時のスケジュール設定
-    schedule("0 13 * * 6,7", () => {
+    cron("0 0 13 * * 0,6", () => {
       this.send();
     });
   }

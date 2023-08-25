@@ -24,7 +24,7 @@ export async function setMessageEvent(
 
     const targetChannelType = initChannelType(String(channelId));
     targetChannelType.launchMessageEvent(bot, message);
-  } catch (e: any) {
+  } catch (e) {
     console.error(e);
   }
 }

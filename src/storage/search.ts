@@ -21,7 +21,8 @@ export const fetchPathDisplays = async (
       );
 
     return pathDisplays;
-  } catch (e: any) {
+  } catch (e) {
+    console.error(e);
     console.error(`Failed search file paths. => ${pathName}/${fileName}`);
     return [];
   }
@@ -50,6 +51,7 @@ const fetchFileMetadata = async (
 
     return metadata;
   } catch (e) {
+    console.error(e);
     console.error(`Failed search file metadata. => ${pathName}/${fileName}`);
     return [];
   }

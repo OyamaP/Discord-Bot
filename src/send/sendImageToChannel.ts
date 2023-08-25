@@ -17,7 +17,7 @@ export async function sendImageToChannel(
 
   try {
     await bot.helpers.sendMessage(channelId, { embeds });
-  } catch (e: any) {
+  } catch (e) {
     console.error(e);
     throw e;
   }
