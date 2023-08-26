@@ -10,7 +10,7 @@ const {
 
 /**
  * 死活監視を必要な設定であればスタートする
- * cron で10秒ごとに指定したチャンネルにメッセージを送信する
+ * cron で1分ごとに指定したチャンネルにメッセージを送信する
  */
 const startAliveMonitorIfNeed = (
   bot: Readonly<Bot>,
@@ -19,7 +19,7 @@ const startAliveMonitorIfNeed = (
   if (Boolean(ALIVE_MONITORING) === false) return
   console.log("Start: Alive Monitor.");
 
-  cron("0 */5 * * * *", async () => {
+  cron("0 */1 * * * *", async () => {
     try {
       await bot.helpers.sendMessage(
         DISCORD_DENO_DEPLOY_MONITOR_CHANNEL_ID,
