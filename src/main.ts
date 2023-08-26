@@ -14,6 +14,7 @@ const bot = createBot({
       setReadyEvent(bot, payload);
     },
     messageCreate(bot: Readonly<Bot>, message: Readonly<Message>) {
+      if (message.isFromBot) return;
       setMessageEvent(bot, message);
     },
   },

@@ -1,9 +1,10 @@
 import { Bot } from "discord";
 import { Payload } from "../../type.ts";
+import startAliveMonitorIfNeed from "./aliveMonitor.ts";
 import { getChannelTypes } from "../../detector/initChannelType.ts";
 
 /**
- * メッセージを起因とするイベントを設定する
+ * ボット開始時にイベントを設定する
  */
 export function setReadyEvent(
   bot: Readonly<Bot>,
@@ -15,4 +16,6 @@ export function setReadyEvent(
   channelTypes.forEach((channelType) =>
     channelType.launchReadyEvent(bot, payload)
   );
+
+  startAliveMonitorIfNeed(bot, payload);
 }

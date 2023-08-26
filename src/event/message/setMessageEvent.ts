@@ -8,7 +8,6 @@ export async function setMessageEvent(
   bot: Readonly<Bot>,
   message: Readonly<Message>,
 ): Promise<void> {
-  if (message.isFromBot) return;
   const { channelId, guildId, content } = message;
 
   try {
