@@ -16,7 +16,7 @@ const startAliveMonitorIfNeed = (
   bot: Readonly<Bot>,
   _payload: Readonly<Payload>
 ): void => {
-  if (Boolean(ALIVE_MONITORING) === false) return
+  if (Number(ALIVE_MONITORING) === 0) return
   console.log("Start: Alive Monitor.");
 
   cron("0 */1 * * * *", async () => {
