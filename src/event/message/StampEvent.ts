@@ -30,6 +30,7 @@ export default class StampEvent implements IMessageEvent {
       }
 
       // Discord で利用されたメッセージ絵文字を削除する
+      // 既に削除されている場合エラーとなるため、メッセージが存在するかの確認をした方がいい？？
       await bot.helpers.deleteMessage(message.channelId, message.id);
 
       // Discord にスタンプ画像を送信
@@ -50,6 +51,17 @@ export default class StampEvent implements IMessageEvent {
       });
       dbAccessor.client.close();
     } catch (e) {
+      // 同一Botで複数のログインセッションが存在する場合、
+      // メッセージを削除後に別のランタイムで削除はできずエラーとなる
+      // Deno Deploy などマルチリージョンにデプロイされる環境を想定
+      const message: string = e.message;
+      if (
+        message.includes("Unknown Message") ||
+        message.includes("10008")
+      ) {
+        console.log("削除対象のメッセージが見つかりませんでした");
+        return;
+      }
       console.error(e);
     }
   }
