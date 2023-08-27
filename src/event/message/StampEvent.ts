@@ -2,7 +2,7 @@ import { Bot, DiscordEmbedAuthor, Message } from "discord";
 import IMessageEvent from "./IMessageEvent.ts";
 import fetchFileLinks from "../../storage/fetchFileLinks.ts";
 import { sendImageToChannel } from "../../send/sendImageToChannel.ts";
-import dbAccessor from "../../model/DatabaseAccessor.ts";
+import DatabaseAccessor from "../../model/DatabaseAccessor.ts";
 
 /**
  * Discord スタンプ(絵文字)利用された場合のイベント
@@ -39,6 +39,7 @@ export default class StampEvent implements IMessageEvent {
       const user = await bot.helpers.getUser(message.authorId);
 
       // 結果をDBに保存する
+      const dbAccessor = await DatabaseAccessor.connect();
       await dbAccessor.StampLog.insertRecord({
         channelId: String(message.channelId),
         guildId: String(message.guildId),
@@ -47,6 +48,7 @@ export default class StampEvent implements IMessageEvent {
         userName: user.username,
         stampName,
       });
+      dbAccessor.client.close();
     } catch (e) {
       console.error(e);
     }
