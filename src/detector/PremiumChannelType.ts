@@ -1,9 +1,9 @@
-import { Client, Message } from 'discord.js';
-import { IChannelType } from './IChannelType.js';
-import { toSplitArray } from './toSplitArray.js';
-import * as dotenv from 'dotenv';
-dotenv.config();
-const { DISCORD_PREMIUM_CHANNEL_ID } = process.env;
+import { Bot, Message } from "discord";
+import { Payload } from "../type.ts";
+import { IChannelType } from "./IChannelType.ts";
+import { toSplitArray } from "./toSplitArray.ts";
+
+const { DISCORD_PREMIUM_CHANNEL_ID } = Deno.env.toObject();
 
 export default class PremiumChannelType implements IChannelType {
   public isTarget(channelId: string): boolean {
@@ -13,11 +13,17 @@ export default class PremiumChannelType implements IChannelType {
     return channelIds.includes(channelId);
   }
 
-  public launchReadyEvent(client: Readonly<Client>): void {
+  public launchReadyEvent(
+    _bot: Readonly<Bot>,
+    _payload: Readonly<Payload>,
+  ): void {
     // 設定無し
   }
 
-  public launchMessageEvent(message: Readonly<Message>): void {
+  public launchMessageEvent(
+    _bot: Readonly<Bot>,
+    _message: Readonly<Message>,
+  ): void {
     // 設定なし
   }
 }

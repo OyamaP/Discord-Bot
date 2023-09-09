@@ -1,0 +1,11 @@
+{
+  "imports": {
+    "axios": "https://cdn.skypack.dev/redaxios@0.5.1?dts",
+    "cron": "https://deno.land/x/deno_cron@v1.0.0/cron.ts",
+    "env": "https://deno.land/std@0.198.0/dotenv/load.ts",
+    "discord": "https://deno.land/x/discordeno@18.0.1/mod.ts",
+    "dropbox": "https://esm.sh/dropbox@10.34.0",
+    "mongo": "https://deno.land/x/mongo@v0.31.2/mod.ts",
+    "server": "https://deno.land/std@0.200.0/http/server.ts"
+  }
+}

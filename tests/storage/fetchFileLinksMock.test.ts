@@ -1,44 +1,57 @@
-import { Dropbox } from 'dropbox';
-import fetchFileLinks from '../../src/storage/fetchFileLinks.js';
+import { Dropbox } from "dropbox";
+import fetchFileLinks from "../../src/storage/fetchFileLinks.ts";
+import {
+  // returnsNext,
+  stub,
+  // spy,
+} from "https://deno.land/std@0.199.0/testing/mock.ts";
 
-describe('fetchFileLinks: mock', () => {
+stub(Dropbox, "prototype", () => {
+  return {
+    filesSearchV2: () => {
+      console.log(100);
+    },
+  };
+});
+
+describe("fetchFileLinks: mock", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test('正常系: ファイルのリンクを取得する', async () => {
-    const fileName = 'test_filename';
-    const pathName = '/123456789001010101';
+  test("正常系: ファイルのリンクを取得する", async () => {
+    const fileName = "test_filename";
+    const pathName = "/123456789001010101";
     const fileLinks = await fetchFileLinks(fileName, pathName);
 
     fileLinks.forEach((fileLink) => {
       expect(fileLink).toBe(
-        'https://dl.dropboxusercontent.com/s/testdir/test_filename.jpg?dl=0'
+        "https://dl.dropboxusercontent.com/s/testdir/test_filename.jpg?dl=0",
       );
     });
   });
 
-  test('異常系: ファイルのリンクを取得する際、ファイル検索に失敗', async () => {
+  test("異常系: ファイルのリンクを取得する際、ファイル検索に失敗", async () => {
     jest
-      .spyOn(Dropbox.prototype, 'filesSearchV2')
-      .mockRejectedValueOnce(new Error('テスト用エラー'));
-    const fileName = 'test_filename';
-    const pathName = '/123456789001010101';
+      .spyOn(Dropbox.prototype, "filesSearchV2")
+      .mockRejectedValueOnce(new Error("テスト用エラー"));
+    const fileName = "test_filename";
+    const pathName = "/123456789001010101";
     const fileLinks = await fetchFileLinks(fileName, pathName);
     expect(fileLinks.length).toBe(0);
   });
 
-  test('異常系: ファイルのリンクを取得する際、共有リンク取得/作成に失敗', async () => {
+  test("異常系: ファイルのリンクを取得する際、共有リンク取得/作成に失敗", async () => {
     // 共有リンクを取得できない場合に共有リンクを作成する仕様のため
     // 両方をエラーモックにしておく
     jest
-      .spyOn(Dropbox.prototype, 'sharingListSharedLinks')
-      .mockRejectedValueOnce(new Error('テスト用エラー'));
+      .spyOn(Dropbox.prototype, "sharingListSharedLinks")
+      .mockRejectedValueOnce(new Error("テスト用エラー"));
     jest
-      .spyOn(Dropbox.prototype, 'sharingCreateSharedLinkWithSettings')
-      .mockRejectedValueOnce(new Error('テスト用エラー'));
-    const fileName = 'test_filename';
-    const pathName = '/123456789001010101';
+      .spyOn(Dropbox.prototype, "sharingCreateSharedLinkWithSettings")
+      .mockRejectedValueOnce(new Error("テスト用エラー"));
+    const fileName = "test_filename";
+    const pathName = "/123456789001010101";
     const fileLinks = await fetchFileLinks(fileName, pathName);
     expect(fileLinks.length).toBe(0);
   });

@@ -1,7 +1,7 @@
-import { IChannelType } from './IChannelType.js';
-import DevelopChannelType from './DevelopChannelType.js';
-import StandardChannelType from './StandardChannelType.js';
-import PremiumChannelType from './PremiumChannelType.js';
+import { IChannelType } from "./IChannelType.ts";
+import DevelopChannelType from "./DevelopChannelType.ts";
+import StandardChannelType from "./StandardChannelType.ts";
+import PremiumChannelType from "./PremiumChannelType.ts";
 
 const channeltypes: IChannelType[] = [
   new DevelopChannelType(),
@@ -15,12 +15,14 @@ export default function initChannelType(channelId: string): IChannelType {
   const targetChannelTypes = channeltypes.filter((channelType) =>
     channelType.isTarget(channelId)
   );
-  if (targetChannelTypes.length === 0)
+  if (targetChannelTypes.length === 0) {
     throw new Error(
-      `${channelId}のチャンネルIDはいずれのタイプにも合致しません`
+      `${channelId}のチャンネルIDはいずれのタイプにも合致しません`,
     );
-  if (targetChannelTypes.length > 1)
+  }
+  if (targetChannelTypes.length > 1) {
     throw new Error(`${channelId}のチャンネルIDは複数のタイプに合致しています`);
+  }
 
   return targetChannelTypes[0];
 }

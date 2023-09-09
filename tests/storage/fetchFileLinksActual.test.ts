@@ -1,17 +1,14 @@
-import fetchFileLinks from '../../src/storage/fetchFileLinks.js';
-import * as dotenv from 'dotenv';
-dotenv.config();
+import "env";
+import { assertEquals } from "https://deno.land/std@0.199.0/assert/mod.ts";
+import fetchFileLinks from "../../src/storage/fetchFileLinks.ts";
 
-// マニュアルモックを停止するにはimportと同じスコープでunmock()する必要がある
-jest.unmock('dropbox');
+const { DISCORD_JEST_GUILD_ID } = Deno.env.toObject();
 
-describe('fetchFileLinks: actual', () => {
-  test('ファイルのリンクを取得する', async () => {
-    const fileName = 'fuka_jitome1';
-    const pathName = `/${process.env.DISCORD_JEST_GUILD_ID || ''}`;
-    const fileLinks = await fetchFileLinks(fileName, pathName);
+Deno.test("fetchFileLinks", async () => {
+  const fileName = "fuka_jitome1";
+  const pathName = `/${DISCORD_JEST_GUILD_ID || ""}`;
+  const fileLinks = await fetchFileLinks(fileName, pathName);
 
-    console.log(fileLinks);
-    expect(fileLinks).toHaveLength(1);
-  });
+  console.log(fileLinks);
+  assertEquals(fileLinks.length, 1);
 });

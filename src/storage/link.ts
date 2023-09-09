@@ -1,37 +1,27 @@
-import { Dropbox } from 'dropbox';
-import * as dotenv from 'dotenv';
-dotenv.config();
-
-const initDropbox = () => {
-  const dbx = new Dropbox({
-    clientId: process.env.DROPBOX_ID,
-    clientSecret: process.env.DROPBOX_SECRET,
-    refreshToken: process.env.DROPBOX_REFRESH_TOKEN,
-  });
-
-  return dbx;
-};
+import initDropbox from "./initDropbox.ts";
 
 /**
  * 表示パス(path_display)からダウンロードリンクを取得する。
  * @param pathDisplays 表示パス
  * @returns ダウンロードリンク
  */
-export const fetchDownloadLinks = async (
-  pathDisplays: readonly string[]
+export const fetchDownloadLinks = (
+  pathDisplays: readonly string[],
 ): Promise<string[]> => {
   return Promise.all(
     pathDisplays.map(async (pathDisplay) => {
       // 共有リンクを検索して、ない場合に作成する
       const sharedLinkByFetch = await fetchSharedLink(pathDisplay);
-      if (sharedLinkByFetch !== undefined)
+      if (sharedLinkByFetch !== undefined) {
         return toDownloadUrl(sharedLinkByFetch);
+      }
       const sharedLinkByCreate = await createSharedLink(pathDisplay);
-      if (sharedLinkByCreate !== undefined)
+      if (sharedLinkByCreate !== undefined) {
         return toDownloadUrl(sharedLinkByCreate);
+      }
 
       throw new Error(`Failed get shared link. => pathDisplay: ${pathDisplay}`);
-    })
+    }),
   );
 };
 
@@ -41,7 +31,7 @@ export const fetchDownloadLinks = async (
  * @returns 共有リンク
  */
 const fetchSharedLink = async (
-  pathDisplay: string
+  pathDisplay: string,
 ): Promise<string | undefined> => {
   try {
     const dbx = initDropbox();
@@ -50,7 +40,8 @@ const fetchSharedLink = async (
     });
     const [link] = response.result.links;
     return link.url;
-  } catch {
+  } catch (e) {
+    console.error(e);
     console.log(`Failed fetch link. => pathDisplay: ${pathDisplay}`);
     return undefined;
   }
@@ -62,7 +53,7 @@ const fetchSharedLink = async (
  * @returns 共有リンク
  */
 const createSharedLink = async (
-  pathDisplay: string
+  pathDisplay: string,
 ): Promise<string | undefined> => {
   try {
     const dbx = initDropbox();
@@ -71,7 +62,8 @@ const createSharedLink = async (
     });
     return response.result.url;
   } catch (e) {
-    console.log(`Failed create link. => pathDisplay: ${pathDisplay}`);
+    console.error(e);
+    console.error(`Failed create link. => pathDisplay: ${pathDisplay}`);
     return undefined;
   }
 };
@@ -82,5 +74,5 @@ const createSharedLink = async (
  * @returns ダウンロードURL
  */
 const toDownloadUrl = (url: string): string => {
-  return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
+  return url.replace("www.dropbox.com", "dl.dropboxusercontent.com");
 };

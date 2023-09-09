@@ -1,15 +1,16 @@
-import { schedule } from 'node-cron';
-import AbstructSendMessageSchedule from './AbstructSendMessageSchedule.js';
-import fetchFileLinks from '../storage/fetchFileLinks.js';
-import { sendImageToChannel } from '../send/sendImageToChannel.js';
+import { cron } from "cron";
+import AbstructSendMessageSchedule from "./AbstructSendMessageSchedule.ts";
+import fetchFileLinks from "../storage/fetchFileLinks.ts";
+import { sendImageToChannel } from "../send/sendImageToChannel.ts";
 
 /**
  * 毎週土日の昼にメッセージを送信するスケジュールを登録/実行するクラス
  */
-export default class SendMessageAtHolidayNoon extends AbstructSendMessageSchedule {
+export default class SendMessageAtHolidayNoon
+  extends AbstructSendMessageSchedule {
   public regist(): void {
     // 毎週土日13時のスケジュール設定
-    schedule('0 13 * * 6,7', () => {
+    cron("0 0 13 * * 0,6", () => {
       this.send();
     });
   }
@@ -17,13 +18,14 @@ export default class SendMessageAtHolidayNoon extends AbstructSendMessageSchedul
   public async send(): Promise<void> {
     try {
       // 祝日昼のスタンプを取得
-      const stampName = 'neka_noon';
+      const stampName = "neka_noon";
       const imageLinks = await fetchFileLinks(stampName, `/${this.channelId}`);
-      if (imageLinks.length === 0)
+      if (imageLinks.length === 0) {
         throw new Error(`Failed get file links. => ${stampName}`);
+      }
 
       // Discord にスタンプ画像を送信
-      await sendImageToChannel(imageLinks, this.channel);
+      await sendImageToChannel(this.bot, this.channelId, imageLinks);
     } catch (e) {
       console.error(e);
     }

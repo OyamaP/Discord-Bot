@@ -1,49 +1,23 @@
-import {
-  Channel,
-  CategoryChannel,
-  PartialGroupDMChannel,
-  StageChannel,
-  ForumChannel,
-  APIEmbedAuthor,
-} from 'discord.js';
-
-/**
- * send()実行可能なチャンネル
- */
-export type SendingExecutableChannel = Exclude<
-  Channel,
-  CategoryChannel | PartialGroupDMChannel | StageChannel | ForumChannel
->;
-
-/**
- * send()実行可能なチャンネルか判定する型ガード
- * @param channel
- * @returns
- */
-export function isSendingExecutableChannel(
-  channel: Readonly<Channel>
-): channel is SendingExecutableChannel {
-  return 'send' in channel;
-}
+import { BigString, Bot, DiscordEmbedAuthor } from "discord";
 
 /**
  * Discord チャンネルに画像を送信する
  * @param message
  */
 export async function sendImageToChannel(
-  imageLinks: readonly string[],
-  channel: Readonly<SendingExecutableChannel>,
-  option?: Readonly<{ author?: APIEmbedAuthor }>
+  bot: Readonly<Bot>,
+  channelId: BigString,
+  imageLinks: ReadonlyArray<string>,
+  option?: Readonly<{ author?: DiscordEmbedAuthor }>,
 ): Promise<void> {
-  const embeds = imageLinks.map((imageLink) => {
-    return {
-      author: option?.author,
-      image: { url: imageLink },
-    };
-  });
+  const embeds = imageLinks.map((imageLink) => ({
+    author: option?.author,
+    image: { url: imageLink },
+  }));
+
   try {
-    channel.send({ embeds });
-  } catch (e: any) {
+    await bot.helpers.sendMessage(channelId, { embeds });
+  } catch (e) {
     console.error(e);
     throw e;
   }

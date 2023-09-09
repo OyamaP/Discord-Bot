@@ -1,12 +1,18 @@
-import { Client } from 'discord.js';
-import { getChannelTypes } from '../../detector/initChannelType.js';
+import { Bot } from "discord";
+import { Payload } from "../../type.ts";
+// import { getChannelTypes } from "../../detector/initChannelType.ts";
 
 /**
- * メッセージを起因とするイベントを設定する
+ * ボット開始時にイベントを設定する
  */
-export function setReadyEvent(client: Readonly<Client>): void {
-  if (client.user) console.log(`Logged in as ${client.user.tag}!`);
+export function setReadyEvent(
+  _bot: Readonly<Bot>,
+  payload: Readonly<Payload>,
+): void {
+  if (payload.user) console.log(`Logged in as ${payload.user.username}!`);
 
-  const channelTypes = getChannelTypes();
-  channelTypes.forEach((channelType) => channelType.launchReadyEvent(client));
+  // const channelTypes = getChannelTypes();
+  // channelTypes.forEach((channelType) =>
+  //   channelType.launchReadyEvent(bot, payload)
+  // );
 }
