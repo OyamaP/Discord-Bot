@@ -1,6 +1,5 @@
 import { Bot } from "discord";
 import { Payload } from "../../type.ts";
-// import startAliveMonitorIfNeed from "./aliveMonitor.ts";
 // import { getChannelTypes } from "../../detector/initChannelType.ts";
 
 /**
@@ -16,6 +15,4 @@ export function setReadyEvent(
   // channelTypes.forEach((channelType) =>
   //   channelType.launchReadyEvent(bot, payload)
   // );
-
-  // startAliveMonitorIfNeed(bot, payload);
 }
