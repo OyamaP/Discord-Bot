@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { Bot, Message } from "discord";
 
 /**
  * メッセージイベントを定義する際はこのインターフェイスを利用して登録する
@@ -12,7 +12,8 @@ export default interface IMessageEvent {
 
   /**
    * イベント処理を開始する
+   * @param bot
    * @param message
    */
-  launchEvent(message: Readonly<Message>): Promise<void>;
+  launchEvent(bot: Readonly<Bot>, message: Readonly<Message>): Promise<void>;
 }

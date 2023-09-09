@@ -1,32 +1,19 @@
-import { Client } from 'discord.js';
-import { ISendMessageSchedule } from './ISchedule.js';
-import {
-  SendingExecutableChannel,
-  isSendingExecutableChannel,
-} from '../send/sendImageToChannel.js';
+import { BigString, Bot } from "discord";
+import { ISendMessageSchedule } from "./ISchedule.ts";
 
 /**
  * メッセージ送信スケジュールの抽象クラス
  * 初期化時にガードを実施する
  */
 export default abstract class AbstructSendMessageSchedule
-  implements ISendMessageSchedule
-{
-  public readonly channel: SendingExecutableChannel;
-  public readonly channelId: string;
+  implements ISendMessageSchedule {
+  public readonly bot: Bot;
+  public readonly channelId: BigString;
   abstract regist(): void;
   abstract send(): Promise<void>;
 
-  constructor(client: Readonly<Client>, channelId: string) {
-    const channel = client.channels.cache.get(channelId);
-    if (channel === undefined) {
-      throw new Error(`${channelId}のチャンネルIDは見つかりませんでした`);
-    }
-    if (!isSendingExecutableChannel(channel)) {
-      throw new Error(`${channelId}のチャンネルIDには送信できません`);
-    }
-
-    this.channel = channel;
+  constructor(bot: Readonly<Bot>, channelId: BigString) {
+    this.bot = bot;
     this.channelId = channelId;
   }
 }

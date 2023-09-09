@@ -1,5 +1,5 @@
-import { fetchPathDisplays } from './search.js';
-import { fetchDownloadLinks } from './link.js';
+import { fetchPathDisplays } from "./search.ts";
+import { fetchDownloadLinks } from "./link.ts";
 
 /**
  * Dropbox から対象ファイルのURLを取得する
@@ -9,7 +9,7 @@ import { fetchDownloadLinks } from './link.js';
  */
 export default async function fetchFileLinks(
   fileName: string,
-  pathName: string
+  pathName: string,
 ): Promise<string[]> {
   try {
     const pathDisplays = await fetchPathDisplays(fileName, pathName);
@@ -24,7 +24,7 @@ export default async function fetchFileLinks(
     }
 
     return fileLinks;
-  } catch (e: any) {
+  } catch (e) {
     console.error(e);
     return [];
   }
